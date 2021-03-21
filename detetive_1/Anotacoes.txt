@@ -1,0 +1,6 @@
+npm init -y
+npm install boardgame.io
+npm install --save-dev parcel-bundler
+src/App.js
+src/Game.js
+index.html
