@@ -1,10 +1,10 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 export const Detetive = {
-    setup: () => ({ cells: Array(9).fill(null) }),
+    setup: () => ({ cells: Array(600).fill(null) }), //25Lx24C
   
     //acabar o turno quando ? mudar pra palpite ou não, move limite é variavel do dado
     turn: {
-      moveLimit: 1,
+      moveLimit: 1, // a dos dados, ao clicar ele calcula e da a somatoria < dado
     },
 
     moves: {
@@ -18,6 +18,7 @@ export const Detetive = {
     },
 
     //sempre que o estado é atualizado ele passa verificando se é vitoria ou fim de partida
+    //mudar condições de vitória esperando para saber como se cria entidades(assasinos, armas, locais, cartas, palpite e acusação)
     endIf: (G, ctx) => {
       if (IsVictory(G.cells)) {
         return { winner: ctx.currentPlayer };
@@ -33,7 +34,7 @@ export const Detetive = {
     ai: {
       enumerate: (G, ctx) => {
         let moves = [];
-        for (let i = 0; i < 9; i++) {
+        for (let i = 0; i < 600; i++) {
           if (G.cells[i] === null) {
             moves.push({ move: 'clickCell', args: [i] });
           }

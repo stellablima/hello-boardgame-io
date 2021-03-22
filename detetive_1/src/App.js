@@ -22,13 +22,12 @@ class DetetiveClient {
     this.client.subscribe(state => this.update(state)); //callbacks for every state change
   }
 
-  createBoard() {
-    // Create cells in rows for the Tic-Tac-Toe board.
+  createBoard() { 
     const rows = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 25; i++) {
       const cells = [];
-      for (let j = 0; j < 3; j++) {
-        const id = 3 * i + j;
+      for (let j = 0; j < 24; j++) {
+        const id = 24 * i + j;
         cells.push(`<td class="cell" data-id="${id}"></td>`);
       }
       rows.push(`<tr>${cells.join('')}</tr>`);
@@ -37,9 +36,26 @@ class DetetiveClient {
     // Add the HTML to our app <div>.
     // We’ll use the empty <p> to display the game winner later.
     this.rootElement.innerHTML = `
-      <table>${rows.join('')}</table>
+      <table id="tabuleiro">${rows.join('')}</table>
       <p class="winner"></p>
     `;
+
+    //configuração de 600 celulas a mão 
+    //selecionar tabela matriz, fazer formula paga pegar linha e coluna pelo id
+    // id(23)[0-23][0-24]       id(26)[0-23][0-24]
+    // 23//24 = 0 linha         26//24 = 1 linha
+    // 23%24 = 23 coluna        26%24  = 2 coluna
+
+    // starts
+    document.getElementById('tabuleiro').rows[0].cells[9].className += " cellStart";
+    document.getElementById('tabuleiro').rows[0].cells[14].className += " cellStart";
+    // inativos
+    // salas
+    // passagem livre
+    // portas
+    // passagem secreta
+
+    //this.rootElement.querySelectorAll('.cell');
   }
 
   attachListeners() { //passando pra game.js qual id da celular clicada

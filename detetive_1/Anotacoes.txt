@@ -4,3 +4,19 @@ npm install --save-dev parcel-bundler
 src/App.js
 src/Game.js
 index.html
+
+
+---tabuleiro
+penso em colocar cores igual no acxel e classes pra cada quadradinho
+
+
+no turno pegar celula atual id somar pra colunas, pra linhas somar +24
+se id da celular que clicou for maior que dado sorteado é invalido, 
+depois adicionar cores pra realçar movimentos validos, inabilitar celulas invalidas
+antes de cada turno
+
+ao final de cada turno ou receber um palpite ou acusação
+rever se separar por turno ou rodada pois cada participante ira fazer 
+um movimento escolhendo a carta que tem pra mostrar mais ainda vai ser 
+a rodada do jogador x, os participantes irão interagir na rodada do jogador x
+o conceito de "fase" pode ajudar aqui
