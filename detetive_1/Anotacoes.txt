@@ -20,3 +20,30 @@ rever se separar por turno ou rodada pois cada participante ira fazer
 um movimento escolhendo a carta que tem pra mostrar mais ainda vai ser 
 a rodada do jogador x, os participantes irão interagir na rodada do jogador x
 o conceito de "fase" pode ajudar aqui
+
+//NO EXCEL COPIAR SEM ESPAÇOS E ADICIONAR UM DEPOIS DA FUNÇÃO
+
+=SE(getRGB(A6)=getRGB(AA4);AB4;(SE(getRGB(A6)=getRGB(AA5);AB5;(SE(getRGB(A6)=getRGB(AA6);AB6;(SE(getRGB(A6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(B6)=getRGB(AA4);AB4;(SE(getRGB(B6)=getRGB(AA5);AB5;(SE(getRGB(B6)=getRGB(AA6);AB6;(SE(getRGB(B6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(C6)=getRGB(AA4);AB4;(SE(getRGB(C6)=getRGB(AA5);AB5;(SE(getRGB(C6)=getRGB(AA6);AB6;(SE(getRGB(C6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(D6)=getRGB(AA4);AB4;(SE(getRGB(D6)=getRGB(AA5);AB5;(SE(getRGB(D6)=getRGB(AA6);AB6;(SE(getRGB(D6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(E6)=getRGB(AA4);AB4;(SE(getRGB(E6)=getRGB(AA5);AB5;(SE(getRGB(E6)=getRGB(AA6);AB6;(SE(getRGB(E6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(F6)=getRGB(AA4);AB4;(SE(getRGB(F6)=getRGB(AA5);AB5;(SE(getRGB(F6)=getRGB(AA6);AB6;(SE(getRGB(F6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(G6)=getRGB(AA4);AB4;(SE(getRGB(G6)=getRGB(AA5);AB5;(SE(getRGB(G6)=getRGB(AA6);AB6;(SE(getRGB(G6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(H6)=getRGB(AA4);AB4;(SE(getRGB(H6)=getRGB(AA5);AB5;(SE(getRGB(H6)=getRGB(AA6);AB6;(SE(getRGB(H6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(I6)=getRGB(AA4);AB4;(SE(getRGB(I6)=getRGB(AA5);AB5;(SE(getRGB(I6)=getRGB(AA6);AB6;(SE(getRGB(I6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(J6)=getRGB(AA4);AB4;(SE(getRGB(J6)=getRGB(AA5);AB5;(SE(getRGB(J6)=getRGB(AA6);AB6;(SE(getRGB(J6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(K6)=getRGB(AA4);AB4;(SE(getRGB(K6)=getRGB(AA5);AB5;(SE(getRGB(K6)=getRGB(AA6);AB6;(SE(getRGB(K6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(L6)=getRGB(AA4);AB4;(SE(getRGB(L6)=getRGB(AA5);AB5;(SE(getRGB(L6)=getRGB(AA6);AB6;(SE(getRGB(L6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(M6)=getRGB(AA4);AB4;(SE(getRGB(M6)=getRGB(AA5);AB5;(SE(getRGB(M6)=getRGB(AA6);AB6;(SE(getRGB(M6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(N6)=getRGB(AA4);AB4;(SE(getRGB(N6)=getRGB(AA5);AB5;(SE(getRGB(N6)=getRGB(AA6);AB6;(SE(getRGB(N6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(O6)=getRGB(AA4);AB4;(SE(getRGB(O6)=getRGB(AA5);AB5;(SE(getRGB(O6)=getRGB(AA6);AB6;(SE(getRGB(O6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(P6)=getRGB(AA4);AB4;(SE(getRGB(P6)=getRGB(AA5);AB5;(SE(getRGB(P6)=getRGB(AA6);AB6;(SE(getRGB(P6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(Q6)=getRGB(AA4);AB4;(SE(getRGB(Q6)=getRGB(AA5);AB5;(SE(getRGB(Q6)=getRGB(AA6);AB6;(SE(getRGB(Q6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(R6)=getRGB(AA4);AB4;(SE(getRGB(R6)=getRGB(AA5);AB5;(SE(getRGB(R6)=getRGB(AA6);AB6;(SE(getRGB(R6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(S6)=getRGB(AA4);AB4;(SE(getRGB(S6)=getRGB(AA5);AB5;(SE(getRGB(S6)=getRGB(AA6);AB6;(SE(getRGB(S6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(T6)=getRGB(AA4);AB4;(SE(getRGB(T6)=getRGB(AA5);AB5;(SE(getRGB(T6)=getRGB(AA6);AB6;(SE(getRGB(T6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(U6)=getRGB(AA4);AB4;(SE(getRGB(U6)=getRGB(AA5);AB5;(SE(getRGB(U6)=getRGB(AA6);AB6;(SE(getRGB(U6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(V6)=getRGB(AA4);AB4;(SE(getRGB(V6)=getRGB(AA5);AB5;(SE(getRGB(V6)=getRGB(AA6);AB6;(SE(getRGB(V6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(W6)=getRGB(AA4);AB4;(SE(getRGB(W6)=getRGB(AA5);AB5;(SE(getRGB(W6)=getRGB(AA6);AB6;(SE(getRGB(W6)=getRGB(AA7);AB7;AB8)))))))
+=SE(getRGB(X6)=getRGB(AA4);AB4;(SE(getRGB(X6)=getRGB(AA5);AB5;(SE(getRGB(X6)=getRGB(AA6);AB6;(SE(getRGB(X6)=getRGB(AA7);AB7;AB8)))))))
