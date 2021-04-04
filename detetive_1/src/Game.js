@@ -1,6 +1,12 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 export const Detetive = {
-    setup: () => ({ cells: Array(600).fill(null) }), //25Lx24C
+    name : 'detetive',
+    minPlayers: 2,
+    maxPlayers: 6,
+    setup: () => ({ 
+      cells: Array(600).fill(null),
+      //numPlayers: 3 //aparentemente so no construtor funfa 
+    }), //25Lx24C
   
     //acabar o turno quando ? mudar pra palpite ou não, move limite é variavel do dado
     turn: {
@@ -10,9 +16,14 @@ export const Detetive = {
     moves: {
       clickCell: (G, ctx, id) => {
         //regras de movimento inválido, se num de casas maior que dado
-        if(G.cells[id] !== null){
+        const row = Math.floor(id/24);
+        const col = id%24;
+        //promises
+        if(G.cells[id] !== null) //return INVALID_MOVE;
           return INVALID_MOVE;
-        }
+        //if(document.getElementById('tabuleiro').rows[row].cells[col].classList.contains("cellNull"))
+        //  return INVALID_MOVE;
+        //tem que estar por último e livre 
         G.cells[id] = ctx.currentPlayer;
       },
     },

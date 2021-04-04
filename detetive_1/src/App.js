@@ -1,4 +1,6 @@
 import { Client } from 'boardgame.io/client';
+//import { Local } from 'boardgame.io/multiplayer';
+import { SocketIO } from 'boardgame.io/multiplayer'
 import { Detetive } from './Game';
 //podemos usar qqr ferramenta pra fazer o tabuleiro, aqui é js puro,
 //construir tabuleiro aqui, declarar como um array unico no game.js
@@ -10,11 +12,24 @@ class DetetiveClient {
     this.client.start();
   }
 }
-
+//client.updateMatchID('newID');
 const app = new DetetiveClient();*/
+/*Local({
+  // Enable localStorage cache.
+  persist: true,
+
+  // Set custom prefix to store data under. Default: 'bgio'.
+  storageKey: 'bgio',
+}); */
 class DetetiveClient {
-  constructor(rootElement) {
-    this.client = Client({ game: Detetive });
+  constructor(rootElement, { playerID } = {}) {
+    this.client = Client({ 
+      game: Detetive,
+      matchID: 'matchID',
+      multiplayer: SocketIO({ server: 'localhost:8000' }),
+      playerID,
+      numPlayers: 3,
+    });
     this.client.start();
     this.rootElement = rootElement;
     this.createBoard();
@@ -663,6 +678,7 @@ class DetetiveClient {
 
   //para aparecer visualmente no campo a mudança na casa
   update(state) {
+    if (state === null) return;
     // Get all the board cells.
     const cells = this.rootElement.querySelectorAll('.cell');
     // Update cells to display the values in game state.
@@ -680,10 +696,42 @@ class DetetiveClient {
           ? 'Winner: ' + state.ctx.gameover.winner
           : 'Draw!';
     } else {
-      messageEl.textContent = '';
+      messageEl.textContent = `It’s player ${state.ctx.currentPlayer}’s turn`;
     }
   }
 }
 
+//const appElement = document.getElementById('app');
+//const app = new DetetiveClient(appElement);
+/*
 const appElement = document.getElementById('app');
-const app = new DetetiveClient(appElement);
+const playerIDs = ['0', '1']; 
+const clients = playerIDs.map(playerID => {
+  const rootElement = document.createElement('div');
+  appElement.append(rootElement);
+  return new DetetiveClient(rootElement, { playerID });
+});*/
+
+
+class App{
+  constructor(rootElement) {
+    SplashScreen(rootElement).then(playerID => {
+      this.client = new DetetiveClient(rootElement, { playerID });
+    });
+  }
+}
+function SplashScreen(rootElement) {
+  return new Promise(resolve => {
+    const createButton = playerID => {
+      const button = document.createElement('button');
+      button.textContent = 'Player ' + playerID;
+      button.onclick = () => resolve(playerID);
+      rootElement.append(button);
+    };
+    rootElement.innerHTML = ` <p>Play as</p>`;
+    const playerIDs = ['0', '1', '2'];
+    playerIDs.forEach(createButton);
+  });
+}
+const appElement = document.getElementById('app');
+const app = new App(appElement);
