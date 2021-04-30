@@ -1,0 +1,4 @@
+player = { ...player, hand, deck };
+não muda o estado do objeto sempre retorno um 
+novo objeto, com atributos pareciso sobrescritos
+ou adicionados, facilita faze e desfazer
