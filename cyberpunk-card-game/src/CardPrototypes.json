@@ -1,0 +1,36 @@
+[
+    {
+        "id": "cracker_01a",
+        "title": "Cracker v1.0",
+        "category": "program",
+        "cpu_cost": 1,
+        "memory_cost": 1,
+        "strength": 1,
+        "attacks": [
+            {"cpu_cost": 1, "damage": 2}
+        ]
+    },
+    {
+        "id": "cracker_01b",
+        "title": "Cracker v1.1",
+        "category": "program",
+        "cpu_cost": 1,
+        "memory_cost": 1,
+        "strength": 2,
+        "attacks": [
+            {"cpu_cost": 1, "damage": 1}
+        ]
+    },
+    {
+        "id": "cracker_02",
+        "title": "Cracker v2.0",
+        "category": "program",
+        "cpu_cost": 2,
+        "memory_cost": 1,
+        "strength": 2,
+        "attacks": [
+            {"cpu_cost": 1, "damage": 2},
+            {"cpu_cost": 2, "damage": 3}
+        ]
+    }
+]
