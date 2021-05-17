@@ -8,7 +8,8 @@
         "strength": 1,
         "attacks": [
             {"cpu_cost": 1, "damage": 2}
-        ]
+        ],
+        "usedAttacks":[]
     },
     {
         "id": "cracker_01b",
