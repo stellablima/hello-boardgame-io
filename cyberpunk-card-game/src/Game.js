@@ -11,7 +11,7 @@
 };*/
 import {initialState, drawCard, playCard, onTurnStart} from './GameLogic';
 
-export const CyberpunkCardGame ={
+export const CyberpunkCardGame = ({
     setup: initialState,
     moves: {
       drawCard,
@@ -20,4 +20,4 @@ export const CyberpunkCardGame ={
     flow: {
       onTurnBegin: onTurnStart // bgio calls it onTurnBegin, oops.
     }
-};
+});

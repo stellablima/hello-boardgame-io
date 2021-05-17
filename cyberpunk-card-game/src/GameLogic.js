@@ -47,7 +47,10 @@ function playCard(currentState, ctx, cardId) {
     let handIndex = currentPlayer.hand.indexOf(cardId);
     let card = currentState.cards[cardId];
     // Ensure the card is in the player's hand and they can afford it.
-    if (handIndex !== -1 && card && currentPlayer.cpu >= card.proto.cpu_cost/* && currentPlayer.memory >= card.proto.memory_cost*/) {
+    if (handIndex !== -1 
+            && card 
+            && currentPlayer.cpu >= card.proto.cpu_cost 
+            && currentPlayer.memory >= card.proto.memory_cost) {
         // Add the card to the player's field.
         let field = ImmutableArray.append(currentPlayer.field, currentPlayer.hand[handIndex]);
         // Remove the card from their hand.
@@ -55,9 +58,9 @@ function playCard(currentState, ctx, cardId) {
         // Pay the CPU cost.
         let cpu = currentPlayer.cpu - card.proto.cpu_cost;
         // Pay the Memory cost.
-        //let memory = currentPlayer.memory - card.proto.memory_cost;
+        let memory = currentPlayer.memory - card.proto.memory_cost;
         // Construct and return a new state object with our changes.
-        return constructStateForPlayer(currentState, playerId, {hand, field, cpu,/* memory*/});
+        return constructStateForPlayer(currentState, playerId, {hand, field, cpu, memory});
     } else {
         // We return the unchanged state if we can't play a card.
         return currentState;
