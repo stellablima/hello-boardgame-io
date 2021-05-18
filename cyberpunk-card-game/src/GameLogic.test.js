@@ -24,7 +24,8 @@ let mockState = {
         field: [],
         maxCpu: 0,
         cpu: 0,
-        memory: 4
+        memory: 4,
+        trash: []
     },
     player_1: {
         deck: [4, 5, 6, 7],
@@ -32,7 +33,8 @@ let mockState = {
         field: [],
         maxCpu: 0,
         cpu: 0,
-        memory: 4
+        memory: 4,
+        trash: []
     }
 };
 let mockCtx = {
@@ -118,42 +120,37 @@ test('prevent playing a card when not enough cpu', () => {
     expect(state_3.player_0.hand).toEqual([3]);
 });
 
+
 function setupGame() {
     const state_0 = initialState(mockCtx, mockState);
     const state_1 = onTurnStart(state_0, mockCtx);
     const state_2 = drawCard(state_1, mockCtx);
     return state_2;
 }
-/*erro
+
 test('program attack', () => {
     const state_0 = setupGame();
     state_0.player_0.field = [0];
     state_0.player_1.field = [1];
-    const instigatorId = 0;
+    const instigatorId = 0; //instigador usuario corrente
     const attackIndex = 0;
-    const targetId = 1;
+    const targetId = 1; //atacada
     const state_1 = attack(state_0, mockCtx, instigatorId, attackIndex, targetId);
     const instigator = state_1.cards[instigatorId];
     const target = state_1.cards[targetId];
-
-    console.log('program attack state_1: '+state_1);
-    console.log('program attack instigator: '+instigator);
-    console.log('program attack target: '+target);
-    console.log('program attack instigator.usedAttacks: '+instigator.usedAttacks);
-    console.log('program attack attackIndex: '+attackIndex);
-    console.log('program attack target.strength: '+target.strength);
-    console.log('program attack target.proto.strength: '+target.proto.strength);
-    console.log('program attack state_1 instigator.proto.attacks[attackIndex].damage mock: '+instigator.proto.attacks[attackIndex].damage);
-
-
-    //program attack instigator.usedAttacks: undefined
-    //program attack target.strength: undefined
-
-
-    expect(instigator.usedAttacks).toBeDefined(); //nao roda?
-    expect(instigator.usedAttacks).toContain(attackIndex);//  Received has value: undefined
+    
+    expect(instigator.usedAttacks).toBeDefined();
+    expect(instigator.usedAttacks).toContain(attackIndex);
     expect(target.strength).toEqual(target.proto.strength - instigator.proto.attacks[attackIndex].damage);
 });
 
 
+/*
+pendencias 
+
+arrumar atack
+testar o trash
+
+
+por hora bora front fighting!
 */
