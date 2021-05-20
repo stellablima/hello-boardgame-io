@@ -1,4 +1,8 @@
 import CardPrototypes from './CardPrototypes.json';
+import GameHelper  from './GameHelper';
+
+const util = require('util');
+
 function initialState(ctx, state) {
     let cardId = 0;
     let cards = [];
@@ -34,17 +38,19 @@ function initialState(ctx, state) {
     };
 }
 function drawCard(currentState, ctx) {
-    let {currentPlayer, playerId} = getCurrentPlayer(currentState, ctx);
+    const help = new GameHelper(currentState, ctx);
+    let {currentPlayer, playerId} = help.getCurrentPlayer();
     // Add the last card in the player's deck to their hand.
     let deckIndex = currentPlayer.deck.length - 1;
     let hand = ImmutableArray.append(currentPlayer.hand, currentPlayer.deck[deckIndex]);
     // Remove the last card in the deck.
     let deck = ImmutableArray.removeAt(currentPlayer.deck, deckIndex);
     // Construct and return a new state object with our changes.
-    return constructStateForPlayer(currentState, playerId, {hand, deck});
+    return help.constructStateForPlayer(playerId, {hand, deck});
 }
 function playCard(currentState, ctx, cardId) {
-    let {currentPlayer, playerId} = getCurrentPlayer(currentState, ctx);
+    const help = new GameHelper(currentState, ctx);
+    let {currentPlayer, playerId} = help.getCurrentPlayer();
     // Find the card in their hand and add it to the field.
     let handIndex = currentPlayer.hand.indexOf(cardId);
     let card = currentState.cards[cardId];
@@ -62,19 +68,19 @@ function playCard(currentState, ctx, cardId) {
         // Pay the Memory cost.
         let memory = currentPlayer.memory - card.proto.memory_cost;
         // Construct and return a new state object with our changes.
-        return constructStateForPlayer(currentState, playerId, {hand, field, cpu, memory});
+        return help.constructStateForPlayer(playerId, {hand, field, cpu, memory});
     } else {
         // We return the unchanged state if we can't play a card.
         return currentState;
     }
 }
-//TIRAR TODOS OS PROTO.USED ATACKS O PROBLEMA ESTA AQUI ATENÇÃOOO (mexer no prototipo e no ctrl f attack)
 function onTurnStart(currentState, ctx) {
-    let {currentPlayer, playerId} = getCurrentPlayer(currentState, ctx);
+    const help = new GameHelper(currentState, ctx);
+    let {currentPlayer, playerId} = help.getCurrentPlayer();
     
     let maxCpu = currentPlayer.maxCpu + 1;
     // Iterate through all cards on the player's field.
-    //a essa altura o player nao tem carta nenhuma na mao e agr :(, mas opa mao é hand o que rolou o que é field é campo, pesquisar mais depois
+    //a essa altura o player nao tem carta nenhuma carta em campo?
         //let cardUpdates = currentPlayer.field.map(cardId => {
             
             let cardUpdates = currentState.cards.map(cardId => {
@@ -92,35 +98,14 @@ function onTurnStart(currentState, ctx) {
             // Create a new cards array, with the updated cards.
             let cards = ImmutableArray.multiSet(currentState.cards, cardUpdates);
     // Return the new state object.
-    return {...constructStateForPlayer(currentState, playerId, {maxCpu, cpu: maxCpu}), cards};
-   // return constructStateForPlayer(currentState, playerId, {maxCpu, cpu: maxCpu});
-}
-function getCurrentPlayer(state, ctx) {
-    let playerId = "player_" + ctx.currentPlayer;
-    let currentPlayer = state[playerId];
-    return {currentPlayer, playerId};
-}
-function getOpponentPlayer(state, ctx) {
-    let opponentPlayerId; 
-    if(ctx.currentPlayer == '0'){//console.log('AQUI: ctx.currentPlayer:'+ctx.currentPlayer)
-        opponentPlayerId = "player_1";
-    }
-    else{
-        opponentPlayerId = "player_0";
-    }
-    let opponentPlayer = state[opponentPlayerId];
-    return {opponentPlayer, opponentPlayerId};
-}
-/*
-getOpponentPlayer() {
-    let opponentPlayerId = "player_" + ((this.ctx.currentPlayer === "0") ? "1" : "0");
-    let opponentPlayer = this.state[opponentPlayerId];
-    return {opponentPlayer, opponentPlayerId};
-}*/
 
-function constructStateForPlayer(currentState, playerId, playerState) {
-    let newPlayerState = Object.assign({}, currentState[playerId], playerState);
-    return {...currentState, [playerId]: newPlayerState};
+    //console.log('currentState:'+util.inspect(currentState, false, null, true))
+    //console.log('state:'+util.inspect(state, false, null, true)) //atualizou
+    //const state = drawCard(currentState, ctx);
+    //const help2 = new GameHelper(state, ctx);
+    //return {...help2.constructStateForPlayer(playerId, {maxCpu, cpu: maxCpu}), cards}; //mas no front nao F
+
+    return {...help.constructStateForPlayer(playerId, {maxCpu, cpu: maxCpu}), cards}; //nao consigo fazer comprar automaticamente n sei pq
 }
 const ImmutableArray = {
     append(arr, value) {
@@ -140,11 +125,10 @@ const ImmutableArray = {
         return [...newCurrentStateCards];
     }
 };
-const util = require('util')
-
 function attack(currentState, ctx, instigatorId, attackIndex, targetId) {
-    let { currentPlayer, playerId } = getCurrentPlayer(currentState, ctx);
-    let { opponentPlayer, opponentPlayerId } = getOpponentPlayer(currentState, ctx);
+    const help = new GameHelper(currentState, ctx);
+    let { currentPlayer, playerId } = help.getCurrentPlayer();
+    let { opponentPlayer, opponentPlayerId } = help.getOpponentPlayer();
     // Get the card that instigates the attack, and the attack target from the current state.
     let instigator = currentState.cards[instigatorId];
     let target = currentState.cards[targetId];
@@ -154,7 +138,7 @@ function attack(currentState, ctx, instigatorId, attackIndex, targetId) {
         && currentPlayer.field.includes(instigatorId)
         && opponentPlayer.field.includes(targetId)
        
-    if (areCardsValid) { //console.log("SOU VALIDO")
+    if (areCardsValid) {
 
         let attack = instigator.proto.attacks[attackIndex];
        
@@ -166,9 +150,10 @@ function attack(currentState, ctx, instigatorId, attackIndex, targetId) {
         
         if (canAttack) {
             // Pay the CPU cost.
-            let cpu = currentPlayer.cpu - getAttackProp(instigator, attackIndex, 'cpu_cost');
+            let cpu = currentPlayer.cpu - help.getAttackProp(instigator, attackIndex, 'cpu_cost');
             // Reduce the target's strength.
-            let strength = getProp(target, 'strength') - getAttackProp(instigator, attackIndex, 'damage');
+        
+            let strength = help.getProp(target, 'strength') - help.getAttackProp(instigator, attackIndex, 'damage');
             let nTarget = { ...target, strength };
             // 'Use' up the attack for this turn.
             let usedAttacks = instigator.usedAttacks || [];
@@ -193,24 +178,14 @@ function attack(currentState, ctx, instigatorId, attackIndex, targetId) {
             }
             console.log('currentState:'+util.inspect(currentState, false, null, true))
             
-            return ({...constructStateForPlayer(currentState, playerId, {cpu}), cards});
+            return ({...help.constructStateForPlayer(playerId, {cpu}), cards});
         }
     }
     
     return currentState;
 }
-function getProp(card, propName) {
-    return card[propName] || card.proto[propName];
-}
-function getAttackProp(card, attackIndex, propName) {
-    let protoAttack = card.proto.attacks[attackIndex];
-    if (card.attacks) {
-        return card.attacks[attackIndex][propName] || protoAttack[propName]
-    } else {
-        return protoAttack[propName];
-    }
-}
 function trashCard(currentState, ctx, playerId, zoneId, cardId) {
+    const help = new GameHelper(currentState, ctx);
     const card = currentState.cards[cardId];
     const player = currentState[playerId];
     const currentZone = player[zoneId];
@@ -222,10 +197,10 @@ function trashCard(currentState, ctx, playerId, zoneId, cardId) {
         // Remove the card from it's current location.
         let currentZoneIndex = currentZone.indexOf(cardId);
         const zone = ImmutableArray.removeAt(currentZone, currentZoneIndex);
-        return constructStateForPlayer(currentState, playerId, {trash, [zoneId]: zone});
+        return help.constructStateForPlayer(playerId, {trash, [zoneId]: zone});
     }
     return currentState;
 }
 
-
+/*arrumar o botted da forma que esta ele incia todas as cartas como booted? provavel fild vcs hand */
 export {initialState, drawCard, playCard, onTurnStart, attack};

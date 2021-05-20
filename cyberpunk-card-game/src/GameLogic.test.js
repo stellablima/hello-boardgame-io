@@ -61,6 +61,7 @@ let mockCtx2 = {
 
 // The test function is provided automatically by the 
 // framework that was installed when we used create-react-app.
+
 test('drawing a card', () => {
     let state_0 = initialState(mockCtx, mockState);
     let state_1 = drawCard(state_0, mockCtx);
@@ -150,7 +151,6 @@ pendencias
 
 arrumar atack
 testar o trash
-
 
 por hora bora front fighting!
 */

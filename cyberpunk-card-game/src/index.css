@@ -11,3 +11,28 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.card-program {
+  border: double;
+  width: 200px;
+  border-radius: 10px;
+}
+
+.card {
+  background-color: seashell;
+  margin: 5px;
+}
+
+.hand{
+  padding: 10px;
+  width: min-content;
+  display:flex;
+}
+
+#hand-player {
+  background-color: aquamarine;
+}
+
+#hand-opponent{
+  background-color: rgb(255, 188, 188);
+}
