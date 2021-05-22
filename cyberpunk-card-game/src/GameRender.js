@@ -43,9 +43,9 @@ class GameRender extends React.Component {
         return <div key={card.id} className={`card card-${card.proto.category} card-${card.booted ? 'booted' : 'unbooted'}`}>
             { card.booted || zone === 'hand' ? null : 'booting...'}
             <p>{card.proto.title} [#{card.id}]</p>
-            <p>CPU: {cpuCost}</p>
-            <p>Memory: {memoryCost}</p>
-            <p>Strength: {strength}</p>
+            <p>CPU: {cpuCost}<br></br>
+            Memory: {memoryCost}<br></br>
+            Strength: {strength}</p>
             {attacks}
             {additionalButtons}
         </div>;
@@ -66,10 +66,10 @@ class GameRender extends React.Component {
         const opponentHand = opponentPlayer.hand.map(c => this.renderHiddenCard(c, 'hand'));
         const opponentField = opponentPlayer.field.map(c => this.renderCard(c, 'field'));
         return <div>
-             <div id="hand-player" className="hand">{playerHand}</div>
-             <div id="hand-opponent" className="hand">{opponentHand}</div>       
-             <div id="field-player" className="field">{playerField}</div>
-             <div id="field-opponent" className="field">{opponentField}</div> 
+             <div id="hand-player" className="hand">Hand{playerHand}</div>
+             <div id="field-player" className="field">Field{playerField}</div>
+             <div id="field-opponent" className="field">Field{opponentField}</div> 
+             <div id="hand-opponent" className="hand">Hand{opponentHand}</div>       
         </div>;
     }
 

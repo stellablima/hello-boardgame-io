@@ -218,4 +218,43 @@ multiSet: (currentStateCards, cardUpdates) => {
     //console.log('[...newCurrentStateCards]:'+util.inspect([...newCurrentStateCards], false, null, true))
 
 
+
+    multiSet: (currentStateCards, cardUpdates) => {
+      let newCurrentStateCards = cardUpdates.map(card => {
+          let currentCardValue = card.value; 
+          
+          return currentCardValue;
+      });
+     
+      console.log('[...newCurrentStateCards]:'+util.inspect([...newCurrentStateCards], false, null, true))
+      return [...newCurrentStateCards];
+      
+  }
+
+  multiSet: (currentStateCards, cardUpdates) => {
+    console.log('currentStateCards:'+util.inspect(currentStateCards, false, null, true))
+    console.log('cardUpdates:'+util.inspect(newCurrentStateCards, false, null, true))
+    let newCurrentStateCards = currentStateCards.map(card => {
+        cardUpdates.map(cardUpdated => {
+            if (cardUpdated.id === card.id)
+                card = cardUpdated
+        })
+        return card;
+    });
+    //console.log('[...newCurrentStateCards]:'+util.inspect([...newCurrentStateCards], false, null, true))
+    return [...newCurrentStateCards];
     
+}
+
+
+multiSet: (currentStateCards, cardUpdates) => {
+  let newCurrentStateCards = currentStateCards.map(card => {
+      let currentCardId = card.id; 
+      
+      return currentCardValue;
+  });
+ 
+  console.log('[...newCurrentStateCards]:'+util.inspect([...newCurrentStateCards], false, null, true))
+  return [...newCurrentStateCards];
+  
+}

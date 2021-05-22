@@ -54,12 +54,14 @@ function playCard(currentState, ctx, cardId) {
     // Find the card in their hand and add it to the field.
     let handIndex = currentPlayer.hand.indexOf(cardId);
     let card = currentState.cards[cardId];
+    //console.log('currentPlayer:'+util.inspect(currentPlayer, false, null, true))
     // Ensure the card is in the player's hand and they can afford it.
     if (handIndex !== -1 
             && card 
             && currentPlayer.cpu >= card.proto.cpu_cost 
             && currentPlayer.memory >= card.proto.memory_cost) {
-        // Add the card to the player's field.
+        // Add the card to the player's field. 
+        //console.log('Ensure the card is in the players hand and they can afford it')
         let field = ImmutableArray.append(currentPlayer.field, currentPlayer.hand[handIndex]);
         // Remove the card from their hand.
         let hand = ImmutableArray.removeAt(currentPlayer.hand, handIndex);
@@ -74,6 +76,9 @@ function playCard(currentState, ctx, cardId) {
         return currentState;
     }
 }
+/* 
+os turnos estão bugados. o jogo nao tem turno
+*/
 function onTurnStart(currentState, ctx) {
     const help = new GameHelper(currentState, ctx);
     let {currentPlayer, playerId} = help.getCurrentPlayer();
@@ -81,31 +86,33 @@ function onTurnStart(currentState, ctx) {
     let maxCpu = currentPlayer.maxCpu + 1;
     // Iterate through all cards on the player's field.
     //a essa altura o player nao tem carta nenhuma carta em campo?
-        //let cardUpdates = currentPlayer.field.map(cardId => {
-            
-            let cardUpdates = currentState.cards.map(cardId => {
-                //let currentCard = currentState.cards[cardId];
-                let currentCard = cardId; //e que ele retorna o proprio obj e nao o indice
-                // Reset card strength, clear usedAttacks and finish booting.
-                let card = {
-                    ...currentCard, 
-                    usedAttacks: [],// currentCard.usedAttacks,
-                    strength: currentCard.proto.strength,
-                    booted: true, 
-                };
-                return {index: cardId.id, value: card};
-            });
-            // Create a new cards array, with the updated cards.
-            let cards = ImmutableArray.multiSet(currentState.cards, cardUpdates);
+    //let cardUpdates = currentPlayer.cards.map(cardId => {
+        //let currentCard = cardId; //e que ele retorna o proprio obj e nao o indice
+        //a função na ta sendo executada
+    let cardUpdates = currentPlayer.field.map(cardId => {
+        let currentCard = currentState.cards[cardId];
+        // Reset card strength, clear usedAttacks and finish booting.
+        let card = {
+            ...currentCard, 
+            usedAttacks: [],// currentCard.usedAttacks,
+            strength: currentCard.proto.strength,
+            booted: true, 
+        };
+        //return {index: cardId.id, value: card};
+        return {card};
+    });
+    // Create a new cards array, with the updated cards.
+
+    let cards = ImmutableArray.multiSet(currentState.cards, (cardUpdates[0] ? [cardUpdates[0].card] : []));
     // Return the new state object.
 
     //console.log('currentState:'+util.inspect(currentState, false, null, true))
     //console.log('state:'+util.inspect(state, false, null, true)) //atualizou
-    //const state = drawCard(currentState, ctx);
-    //const help2 = new GameHelper(state, ctx);
-    //return {...help2.constructStateForPlayer(playerId, {maxCpu, cpu: maxCpu}), cards}; //mas no front nao F
+    const state = drawCard(currentState, ctx);
+    const help2 = new GameHelper(state, ctx);
+    return {...help2.constructStateForPlayer(playerId, {maxCpu, cpu: maxCpu}), cards}; //mas no front nao F
 
-    return {...help.constructStateForPlayer(playerId, {maxCpu, cpu: maxCpu}), cards}; //nao consigo fazer comprar automaticamente n sei pq
+    //return {...help.constructStateForPlayer(playerId, {maxCpu, cpu: maxCpu}), cards}; //nao consigo fazer comprar automaticamente n sei pq
 }
 const ImmutableArray = {
     append(arr, value) {
@@ -115,15 +122,17 @@ const ImmutableArray = {
         return [...arr.slice(0, index), ...arr.slice(index + 1)];
     },
     multiSet: (currentStateCards, cardUpdates) => {
-        let newCurrentStateCards = cardUpdates.map(card => {
-            let currentCardValue = card.value; 
-            
-            return currentCardValue;
+        console.log('currentStateCards:'+util.inspect(currentStateCards, false, null, true))
+        console.log('cardUpdates:'+util.inspect(cardUpdates, false, null, true))
+        let newCurrentStateCards = currentStateCards.map(currentCard => {
+            cardUpdates.map(cardUpdated => {
+                if (cardUpdated && cardUpdated.id === currentCard.id)
+                    currentCard = cardUpdated
+            })
+            return currentCard;
         });
-        /*socorrr arrumar, seila meio que retorna duplicado socorr seila HELP im fadigada*/
-        //console.log('[...newCurrentStateCards]:'+util.inspect([...newCurrentStateCards], false, null, true))
         return [...newCurrentStateCards];
-    }
+    }    
 };
 function attack(currentState, ctx, instigatorId, attackIndex, targetId) {
     const help = new GameHelper(currentState, ctx);
@@ -150,20 +159,23 @@ function attack(currentState, ctx, instigatorId, attackIndex, targetId) {
         
         if (canAttack) {
             // Pay the CPU cost.
-            let cpu = currentPlayer.cpu - help.getAttackProp(instigator, attackIndex, 'cpu_cost');
+            let {getProp, getAttackProp} = GameHelper;
+            let cpu = currentPlayer.cpu - getAttackProp(instigator, attackIndex, 'cpu_cost');
             // Reduce the target's strength.
         
-            let strength = help.getProp(target, 'strength') - help.getAttackProp(instigator, attackIndex, 'damage');
+            let strength = getProp(target, 'strength') - getAttackProp(instigator, attackIndex, 'damage');
             let nTarget = { ...target, strength };
             // 'Use' up the attack for this turn.
             let usedAttacks = instigator.usedAttacks || [];
             usedAttacks = [...usedAttacks, attackIndex];
             let nInstigator = { ...instigator, usedAttacks };
             // Return the new state object.
+            /*
             let cards = ImmutableArray.multiSet(currentState.cards, [
                 { index: instigatorId, value: nInstigator },
                 { index: targetId, value: nTarget }
-            ]);
+            ]);*/
+            let cards = ImmutableArray.multiSet(currentState.cards, [nInstigator, nTarget]);
            
             /*
             console.log('currentState.cards:'+util.inspect(currentState.cards, false, null, true))
@@ -176,7 +188,7 @@ function attack(currentState, ctx, instigatorId, attackIndex, targetId) {
             if (strength <= 0) {
                 currentState = trashCard(currentState, ctx, opponentPlayerId, "field", targetId);
             }
-            console.log('currentState:'+util.inspect(currentState, false, null, true))
+            //console.log('currentState:'+util.inspect(currentState, false, null, true))
             
             return ({...help.constructStateForPlayer(playerId, {cpu}), cards});
         }
@@ -202,5 +214,4 @@ function trashCard(currentState, ctx, playerId, zoneId, cardId) {
     return currentState;
 }
 
-/*arrumar o botted da forma que esta ele incia todas as cartas como booted? provavel fild vcs hand */
 export {initialState, drawCard, playCard, onTurnStart, attack};

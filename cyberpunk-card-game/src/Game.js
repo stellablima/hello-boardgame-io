@@ -18,7 +18,9 @@ export const CyberpunkCardGame = ({
       playCard,
       attack
     },
-    flow: {
-      onTurnBegin: onTurnStart // bgio calls it onTurnBegin, oops.
-    }
+
+      turn: { 
+        onBegin: onTurnStart, //flow: onbeginturn não funciona mais
+      },
+
 });
