@@ -47,17 +47,6 @@ let mockCtx = {
       //  activePlayers: null,
      //   numMoves: 0
 };
-let mockCtx2 = {
-    numPlayers: 2,
-  //  turn: 1,
-    currentPlayer: "1",
-    playOrder:[0, 1],
-   // playOrderPos: 0,
-   // phase: null,
-  //  activePlayers: null,
- //   numMoves: 0
-};
-
 
 // The test function is provided automatically by the 
 // framework that was installed when we used create-react-app.
@@ -70,7 +59,7 @@ test('drawing a card', () => {
     expect(state_0.player_0.hand).toEqual([]);
     expect(state_1.player_0.hand).toEqual([3]);
 });*/
-
+/*
 test('playing a card', () => {
     let state_0 = initialState(mockCtx, mockState);
     let state_1 = onTurnStart(state_0, mockCtx); //adiciona 1 na cpu, como exige custo pra jogar a carta 0 cpu sempre retorna a função sem executar o discarte
@@ -82,7 +71,7 @@ test('playing a card', () => {
     expect(state_2.player_0.hand).toEqual([3]);
     expect(state_3.player_0.field).toEqual([3]);
     expect(state_3.player_0.hand).toEqual([]);
-});
+});*/
 /*
 test('cpu refresh on turn start', () => {
     const state_0 = initialState(mockCtx, mockState);
@@ -145,10 +134,8 @@ test('program attack', () => {
     expect(target.strength).toEqual(target.proto.strength - instigator.proto.attacks[attackIndex].damage);
 });
 */
-
 /*
+test('trash', () => {});
 pendencias 
-
-arrumar atack  - todas as fções que usam multset tao bugadas
 testar o trash
 */

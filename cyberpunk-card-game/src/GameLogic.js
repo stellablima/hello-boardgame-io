@@ -122,8 +122,8 @@ const ImmutableArray = {
         return [...arr.slice(0, index), ...arr.slice(index + 1)];
     },
     multiSet: (currentStateCards, cardUpdates) => {
-        console.log('currentStateCards:'+util.inspect(currentStateCards, false, null, true))
-        console.log('cardUpdates:'+util.inspect(cardUpdates, false, null, true))
+        //console.log('currentStateCards:'+util.inspect(currentStateCards, false, null, true))
+        //console.log('cardUpdates:'+util.inspect(cardUpdates, false, null, true))
         let newCurrentStateCards = currentStateCards.map(currentCard => {
             cardUpdates.map(cardUpdated => {
                 if (cardUpdated && cardUpdated.id === currentCard.id)
@@ -189,8 +189,8 @@ function attack(currentState, ctx, instigatorId, attackIndex, targetId) {
                 currentState = trashCard(currentState, ctx, opponentPlayerId, "field", targetId);
             }
             //console.log('currentState:'+util.inspect(currentState, false, null, true))
-            
-            return ({...help.constructStateForPlayer(playerId, {cpu}), cards});
+            const help2 = new GameHelper(currentState, ctx);
+            return ({...help2.constructStateForPlayer(playerId, {cpu}), cards});
         }
     }
     
@@ -205,7 +205,7 @@ function trashCard(currentState, ctx, playerId, zoneId, cardId) {
     if (isCardValid) {
         // Add the card to the player's trash.
         const trash = ImmutableArray.append(player.trash, cardId);
-        //console.log('player:'+util.inspect(player, false, null, true))
+        console.log('player:'+util.inspect(player, false, null, true))
         // Remove the card from it's current location.
         let currentZoneIndex = currentZone.indexOf(cardId);
         const zone = ImmutableArray.removeAt(currentZone, currentZoneIndex);

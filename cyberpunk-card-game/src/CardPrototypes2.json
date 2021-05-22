@@ -1,0 +1,92 @@
+[
+    {
+        "id": "bit-swizzler-01",
+        "title": "Bit Swizzler v1.0",
+        "category": "program",
+        "cpu_cost": 2,
+        "memory_cost": 1,
+        "strength": 2,
+        "routines": [
+            {
+                "type": "triggered",
+                "text": "if (selfPlayProgram)\n  damageEnemyProgram(1)",
+                "event": {
+                    "id": "play-card",
+                    "category": "program",
+                    "player": "self"
+                },
+                "response": [
+                    {
+                        "id": "deal-damage",
+                        "damage": 1,
+                        "target": {
+                            "category": "program",
+                            "zone": "field",
+                            "player": "enemy"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "bit-swizzler-01",
+        "title": "Bit Swizzler v1.0",
+        "category": "program",
+        "cpu_cost": 2,
+        "memory_cost": 1,
+        "strength": 2,
+        "routines": [
+            {
+                "type": "triggered",
+                "text": "if (selfPlayProgram)\n  damageEnemyProgram(1)",
+                "event": {
+                    "id": "play-card",
+                    "category": "program",
+                    "player": "self"
+                },
+                "response": [
+                    {
+                        "id": "deal-damage",
+                        "damage": 1,
+                        "target": {
+                            "category": "program",
+                            "zone": "field",
+                            "player": "enemy"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "bit-swizzler-01",
+        "title": "Bit Swizzler v1.0",
+        "category": "program",
+        "cpu_cost": 2,
+        "memory_cost": 1,
+        "strength": 2,
+        "routines": [
+            {
+                "type": "triggered",
+                "text": "if (selfPlayProgram)\n  damageEnemyProgram(1)",
+                "event": {
+                    "id": "play-card",
+                    "category": "program",
+                    "player": "self"
+                },
+                "response": [
+                    {
+                        "id": "deal-damage",
+                        "damage": 1,
+                        "target": {
+                            "category": "program",
+                            "zone": "field",
+                            "player": "enemy"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+]
