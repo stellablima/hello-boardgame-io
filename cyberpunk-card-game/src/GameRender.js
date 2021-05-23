@@ -2,6 +2,37 @@ import React from 'react';
 import GameHelper  from './GameHelper';
 //https://material-ui.com/pt/components/cards/
 
+class Stat extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            statClass: 'stat'
+        };
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.value !== this.props.value) {
+            this.setState({
+                statClass: 'stat highlight'
+            });
+            setTimeout(() => {
+                this.setState({
+                    statClass: 'stat'
+                });
+            }, 2000);
+        }
+    }
+
+    render() {
+        let {icon, value} = this.props;
+        let statClass = []
+        return <span>
+            <img src={"/icon/"+icon+".png"} width="32" className="icon"/>
+            <span className={this.state.statClass}>{value}</span>
+        </span>;
+    }
+}
+
 // This is a React component.
 // If you've not used React before I recommend you read up on it.
 // TODO: Change the Renderer to use three.js
@@ -13,7 +44,7 @@ class GameRender extends React.Component {
         let cpuCost = getProp(card, 'cpu_cost');
         let memoryCost = getProp(card, 'memory_cost');
         let strength = getProp(card, 'strength');
-        let attacks = card.proto.attacks.map((attack, index) => {
+        let attacks = card.proto.routines.map((attack, index) => {
             let cpuCost = getAttackProp(card, index, 'cpu_cost');
             let damage = getAttackProp(card, index, 'damage');
             let isDisabled = (card.usedAttacks && card.usedAttacks.includes(index)) || !card.booted;
@@ -43,20 +74,22 @@ class GameRender extends React.Component {
         return <div key={card.id} className={`card card-${card.proto.category} card-${card.booted ? 'booted' : 'unbooted'}`}>
             { card.booted || zone === 'hand' ? null : 'booting...'}
             <p>{card.proto.title} [#{card.id}]</p>
-            <p>CPU: {cpuCost}<br></br>
-            Memory: {memoryCost}<br></br>
-            Strength: {strength}</p>
-            {attacks}
-            {additionalButtons}
-        </div>;
+                <div class="stats">
+                <Stat icon="processor" value={cpuCost} />
+                <Stat icon="ram" value={memoryCost} />
+                <Stat icon="heart-beats" value={strength} />
+            </div>
+                {attacks}
+                {additionalButtons}
+            </div>;
     }
 
     render() {
         const state = this.props.G;
         const ctx = this.props.ctx;
         const helper = this.helper = new GameHelper(state, ctx);
-        const {currentPlayer} = helper.getCurrentPlayer();
-        const {opponentPlayer} = helper.getOpponentPlayer();
+        const {currentPlayer, playerId} = helper.getCurrentPlayer();
+        const {opponentPlayer, opponentPlayerId} = helper.getOpponentPlayer();
 
         //const playerHand = currentPlayer.hand.map(this.renderCard.bind(this));
         //const opponentHand = opponentPlayer.hand.map(this.renderCard.bind(this));
@@ -66,10 +99,32 @@ class GameRender extends React.Component {
         const opponentHand = opponentPlayer.hand.map(c => this.renderHiddenCard(c, 'hand'));
         const opponentField = opponentPlayer.field.map(c => this.renderCard(c, 'field'));
         return <div>
-             <div id="hand-player" className="hand">Hand{playerHand}</div>
-             <div id="field-player" className="field">Field{playerField}</div>
-             <div id="field-opponent" className="field">Field{opponentField}</div> 
-             <div id="hand-opponent" className="hand">Hand{opponentHand}</div>       
+            <div className="board">
+                <div id="hand-player" className="hand">
+                    <div class="header">
+                        <h4>{playerId}</h4>
+                        <h4>Hand:</h4>
+                        <div className="stats">
+                            <Stat icon="processor" value={currentPlayer.cpu} /><br></br>
+                            <Stat icon="ram" value={currentPlayer.memory} />
+                        </div>
+                    </div>
+                    {playerHand}
+                </div>
+                <div id="field-player" className="field"><h4>Field:</h4>{playerField}</div>
+                <div id="field-opponent" className="field"><h4>Field:</h4>{opponentField}</div>
+                <div id="hand-opponent" className="hand">
+                    <div class="header">
+                        <h4>{opponentPlayerId}</h4>
+                        <h4>Hand:</h4>
+                        <div className="stats">
+                            <Stat icon="processor" value={opponentPlayer.cpu} />
+                            <Stat icon="ram" value={opponentPlayer.memory} />
+                        </div>
+                    </div>
+                    {opponentHand}
+                </div>
+            </div>
         </div>;
     }
 

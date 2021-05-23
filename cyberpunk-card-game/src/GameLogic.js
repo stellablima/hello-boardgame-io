@@ -21,19 +21,19 @@ function initialState(ctx, state) {
             deck: [0, 1, 2, 3],
             hand: [],
             field: [],
+            trash: [],
             maxCpu: 0,
             cpu: 0,
             memory: 4,
-            trash: []
         },
         player_1: {
             deck: [4, 5, 6, 7],
             hand: [],
             field: [],
+            trash: [],
             maxCpu: 0,
             cpu: 0,
             memory: 4,
-            trash: []
         }
     };
 }
@@ -76,9 +76,6 @@ function playCard(currentState, ctx, cardId) {
         return currentState;
     }
 }
-/* 
-os turnos estão bugados. o jogo nao tem turno
-*/
 function onTurnStart(currentState, ctx) {
     const help = new GameHelper(currentState, ctx);
     let {currentPlayer, playerId} = help.getCurrentPlayer();
@@ -149,7 +146,7 @@ function attack(currentState, ctx, instigatorId, attackIndex, targetId) {
        
     if (areCardsValid) {
 
-        let attack = instigator.proto.attacks[attackIndex];
+        let attack = instigator.proto.routines[attackIndex];
        
 
         // Check if the player can afford the cpu cost of the attack and the attack has not already
@@ -212,6 +209,86 @@ function trashCard(currentState, ctx, playerId, zoneId, cardId) {
         return help.constructStateForPlayer(playerId, {trash, [zoneId]: zone});
     }
     return currentState;
+}
+function triggerEvent(currentState, ctx, eventId, payload, helper) {
+    // First of all, iterate through all cards in the current player's
+    // field to see if they respond.
+    let {currentPlayer, playerId} = helper.getCurrentPlayer();
+    let {opponentPlayer, opponentPlayerId} = helper.getOpponentPlayer();
+    // Find all valid triggers in the player's field.
+    let triggers = currentPlayer.field.map(cardId => {
+        let card = helper.state.cards[cardId];
+        return card.proto.routines.filter(routine => {
+            return routine.type === "triggered" && routine.event.id === eventId;
+        });
+    });
+    // Flatten the triggers array. Notice how the above map function returns
+    // nested arrays: triggers = [[...], [...], [...]]
+    // The .reduce function will flatten this to: [..., ..., ...]
+    triggers = triggers.reduce((arr, triggers) => arr.concat(triggers), []);
+    // Filter out trigger that don't match it's event parameters.
+    triggers = triggers.filter(trigger => {
+        if (eventId === 'play-card') {
+            let isSameCategory = trigger.event.category === payload.category;
+            if (trigger.event.player === "self") {
+                return playerId === payload.playerId && isSameCategory;
+            } else if (trigger.event.player === "enemy") {
+                return opponentPlayerId === payload.playerId && isSameCategory;
+            } else {
+                return isSameCategory;
+            }
+        }
+    });
+    // Collect all the responses from our triggers into a single array.
+    let responses = triggers.reduce((arr, trigger) => arr.concat(trigger.response), []);
+    // For now, let's just log our responses.
+    console.log(responses);
+    let state = currentState;
+    responses.forEach(r => {
+        if (r.id === "deal-damage") {
+            // Find a target.
+            let candidates = [];
+            if (r.target.player === "enemy" || r.target.player === "both") {
+                const _candidates = opponentPlayer[r.target.zone]
+                    .filter(cardId => state.cards[cardId].proto.category === r.target.category)
+                    .map(id => {
+                        return {id, playerId: opponentPlayerId, zone: r.target.zone};
+                    });
+                candidates = [...candidates, ..._candidates];
+            } else if (r.target.player === "self" || r.target.player === "both") {
+                const _candidates = currentPlayer[r.target.zone]
+                    .filter(cardId => state.cards[cardId].proto.category === r.target.category)
+                    .map(id => {
+                        return {id, playerId, zone: r.target.zone};
+                    });
+                candidates = [...candidates, ..._candidates];
+            }
+            // If we have multiple valid targets, pick one at random.
+            const target = helper.pickRandom(candidates);
+            if (target) {
+                // The dealDamage function will also trigger an event.
+                state = dealDamage(state, ctx, target.playerId, target.zone, target.id, r.damage);
+            }
+        }
+    });
+    return state;
+}
+function dealDamage(currentState, ctx, playerId, zone, cardId, damage) {
+    let state = currentState;
+    const { getProp } = GameHelper;
+    const currentCard = state.cards[cardId];
+    const strength = getProp(currentCard, "strength") - damage;
+    const card = {...currentCard, strength};
+    const cards = ImmutableArray.set(state.cards, card, cardId);
+    // Trash if card destroyed.
+    if (strength <= 0) {
+        console.log('trashing card', playerId, zone, cardId);
+        state = trashCard(state, ctx, playerId, zone, cardId);
+    }
+    // Notice how we call triggerEvent(). This dealDamage() was called from triggerEvent.
+    // The recursion leads to complex behaviour.
+    state = triggerEvent(state, ctx, 'deal-damage', {cardId, playerId, zone});
+    return {...state, cards};
 }
 
 export {initialState, drawCard, playCard, onTurnStart, attack};

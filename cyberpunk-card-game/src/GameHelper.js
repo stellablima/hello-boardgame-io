@@ -11,7 +11,7 @@ class GameHelper {
     }
 
     static getAttackProp(card, attackIndex, propName) {
-        let protoAttack = card.proto.attacks[attackIndex];
+        let protoAttack = card.proto.routines[attackIndex];
         if (card.attacks) {
             return card.attacks[attackIndex][propName] || protoAttack[propName]
         } else {

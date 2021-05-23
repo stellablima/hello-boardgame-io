@@ -10,3 +10,8 @@ const App = Client({
 });
 
 export default App;
+
+//http://www.locogame.co.uk/blog/digital-card-game-part-p03/#1-triggered-routines
+/*
+Pausa para extressar o código pro board
+*/

@@ -6,8 +6,8 @@
         "cpu_cost": 1,
         "memory_cost": 1,
         "strength": 1,
-        "attacks": [
-            {"cpu_cost": 1, "damage": 2}
+        "routines": [
+            {"type": "attack", "text": "1 cpu: deal 2 damage.", "cpu_cost": 1, "damage": 2}
         ]
     },
     {
@@ -17,8 +17,8 @@
         "cpu_cost": 1,
         "memory_cost": 1,
         "strength": 1,
-        "attacks": [
-            {"cpu_cost": 1, "damage": 1}
+        "routines": [
+            {"type": "attack", "text": "1 cpu: deal 1 damage.", "cpu_cost": 1, "damage": 1}
         ]
     },
     {
@@ -28,9 +28,9 @@
         "cpu_cost": 1,
         "memory_cost": 1,
         "strength": 1,
-        "attacks": [
-            {"cpu_cost": 1, "damage": 2},
-            {"cpu_cost": 2, "damage": 3}
+        "routines": [
+            {"type": "attack", "text": "1 cpu: deal 2 damage.", "cpu_cost": 1, "damage": 2},
+            {"type": "attack", "text": "2 cpu: deal 3 damage.", "cpu_cost": 2, "damage": 3}
         ]
     }
 ]
