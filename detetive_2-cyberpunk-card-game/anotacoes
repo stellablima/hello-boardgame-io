@@ -1,0 +1,97 @@
+npx create-react-app detetive
+npm install --save boardgame.io
+App.js
+Game.js
+GameRender.js
+
+
+
+
+
+
+
+
+
+player = { ...player, hand, deck };
+não muda o estado do objeto sempre retorno um 
+novo objeto, com atributos pareciso sobrescritos
+ou adicionados, facilita faze e desfazer
+
+já pode fazer os prototipos das cartas que ta safe
+já pode imaginar o geralzão dos movimentos
+pelo menos reservar o nome e pensar na lógica geral
+
+pensar com usar front fazes e turnos
+
+
+
+
+import { func } from 'prop-types';
+import React, {useState} from 'react';
+
+class GameRender extends React.Component {
+
+    
+
+    /**/
+
+    render() {
+        const state = this.props.G;
+        const ctx = this.props.ctx;
+
+        /*configuration
+        
+        como configurar celula por celula
+        função setBoard
+        função updateBoard
+        
+        
+        */
+        
+    }
+}
+
+function start(){
+        const [tela, setTela] = useState('partida'); 
+
+        switch (tela) {
+            case 'lobby':
+                return getTelaLobby();
+            case 'partida':
+                return getTelaPartida();
+            case 'win':
+                return getTelaWinner();
+        }
+
+        function getTelaLobby(){
+            return 'lobby'
+            
+        }
+        function getTelaPartida(){
+
+            const rows = [];
+            for (let i = 0; i < 25; i++) {
+            const cells = [];
+            for (let j = 0; j < 24; j++) {
+                const id = 24 * i + j;
+                cells.push(`<td className="cell" id="${id}"></td>`);
+            }
+            rows.push(`<tr>${cells.join('')}</tr>`);
+            }
+            return <div>
+                <div className="board">
+                    <table id="tabuleiro">
+                        <div dangerouslySetInnerHTML={{__html:rows.join('')}} />
+                    </table>
+                </div>
+            </div>;
+
+                return 'partida'
+                
+        }
+        function getTelaWinner(){
+            return 'winner'
+        }
+    }
+
+export default GameRender;
