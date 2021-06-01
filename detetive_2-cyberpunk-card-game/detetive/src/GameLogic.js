@@ -1,9 +1,8 @@
 //import CardPrototypes from './CardPrototypes.json';
 //import GameHelper  from './GameHelper';
+//const util = require('util');
 
-const util = require('util');
-
-function initialState(ctx, state) {
+function setup() {
     //retorna objetos, cells se refere ao conteudo da celular
     /* ele pode se tornar um json maior talvez, ou talvez eu precise 
     espelhar as classes do frontend no backend, informando assim
@@ -14,9 +13,9 @@ function initialState(ctx, state) {
     e no front colocar cells.estado pra ficar o id do jogador no front que 
     tbm pode ser substituido por uma imagem*/
 
-    let cells = { celula: Array(600).fill(), estado: Array(600).fill()}
+    let cells = { celula: Array(600).fill(null), estado: Array(600).fill(null)}
     //pré sets
-    {
+    
         cells.celula[0] = 'cell cellNull'
         cells.celula[1] = 'cell cellNull'
         cells.celula[2] = 'cell cellNull'
@@ -617,9 +616,16 @@ function initialState(ctx, state) {
         cells.celula[597] = 'cell cellNull'
         cells.celula[598] = 'cell cellNull'
         cells.celula[599] = 'cell cellNull'
-    }
+    
+
+
+    //createBoard()
+    //attachListeners() não da pra chamar função mover sem 
+    //os turnos e tudo mais declarado
 
     return cells
 }
 
-export { initialState };
+
+
+export { setup };
