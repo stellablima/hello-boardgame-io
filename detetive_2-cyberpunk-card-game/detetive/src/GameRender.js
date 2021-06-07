@@ -27,8 +27,10 @@ class GameRender extends React.Component {
     */
     render() {
         const board = this.renderBoard()
-
-        return <div className="main">{board}</div>
+        const formulario = this.renderFormulario()
+        const hand = this.renderHand()
+        const dado =  this.renderDado()
+        return <div className="main">{board}{dado}{formulario}{hand}</div>
     }
 
     renderBoard() { //create board
@@ -697,17 +699,77 @@ class GameRender extends React.Component {
         </div>;
     }
 
+    renderHand() {
+        const {cartas} = this.props.G;
+        //const personagens = cartas.personagem.map(c => this.renderPersonagemList(c.label));
+        //const currentPlayer = "Player_" + state.currentPlayer; //if element.jogador is
+        //const playerHand = []
+
+        //const cartas = this.props.G.cartas;
+        //const personagens = cartas.personagem.map(c => this.renderPersonagemList(c.label));//locais//armas
+        const playerHandPersonagem =  cartas.personagem.map(c => this.renderCardHand(c, 'personagem'));
+        const playerHandArma =  cartas.arma.map(c => this.renderCardHand(c, 'arma'));
+        const playerHandLocal =  cartas.local.map(c => this.renderCardHand(c, 'local'));
+
+        //cartas.forEach(element => {
+        //    playerHand.push(element)
+        //});
+        
+        return <div className="hand">
+            {playerHandPersonagem}
+            {playerHandArma}
+            {playerHandLocal}
+        </div>
+    
+}
+
+    renderCardHand(c, tipo){
+        const {currentPlayer} = this.props.ctx;
+        const currentPlayerId = "player_" + currentPlayer;
+        var mao = []
+
+        if(c.jogador && c.jogador === currentPlayerId)
+            mao.push(c.label);
+
+        return <div className={tipo} key={c.label}>
+            {mao}
+        </div>
+        
+    }
+
+    renderFormulario() {//futuramente trocar tudo pelo label {} das cartas, fazer laço e otimizar de alguma forma
+        const cartas = this.props.G.cartas;
+        const personagens = cartas.personagem.map(c => this.renderList(c.label));
+        const armas = cartas.arma.map(c => this.renderList(c.label));
+        const locais = cartas.local.map(c => this.renderList(c.label));
+        return <div className="formulario">
+            <h3>Formulário</h3>
+            <h4>Quem:</h4>
+            <ul>
+                {personagens}
+            </ul>
+            <h4>Como:</h4>
+            <ul>
+                {armas}
+            </ul>
+            <h4>Onde:</h4>
+            <ul>
+               {locais}
+            </ul>
+        </div>
+    }
+
     attachListeners(currentState, ctx, el) {
-       /* const handleCellClick = event => {
-            const id = parseInt(event.target.dataset.id);
-            this.client.moves.clickCell(id); //trigger the moves
-        };
-        // Attach the event listener to each of the board cells.
-        const cells = this.rootElement.querySelectorAll('.cell');
-        cells.forEach(cell => {
-            cell.onclick = handleCellClick.;
-        });
-        */ 
+        /* const handleCellClick = event => {
+             const id = parseInt(event.target.dataset.id);
+             this.client.moves.clickCell(id); //trigger the moves
+         };
+         // Attach the event listener to each of the board cells.
+         const cells = this.rootElement.querySelectorAll('.cell');
+         cells.forEach(cell => {
+             cell.onclick = handleCellClick.;
+         });
+         */
         //this.state.
         //console.log(el.target.id.slice(2));
         const id = el.target.id.slice(2);
@@ -717,8 +779,26 @@ class GameRender extends React.Component {
         //console.log(JSON.stringify(this, null, 4));
         //console.log(util.inspect(this, false, null, true))
     }
+    renderList(label) {
+        return <li key={label}>
+            <input type="checkbox"></input>
+            <label className="container">{label}</label>
+        </li>
+    }
+    renderDado(){
+        const state = this.props.G;
+        var dado = state.dado;//classe
+
+        return <div className="dado">
+            {dado}
+        </div>
+    }
 
 }
 
 
 export default GameRender;
+
+/*
+talves seja necessario colocar id nas cartas para referenciar nas listas
+*/

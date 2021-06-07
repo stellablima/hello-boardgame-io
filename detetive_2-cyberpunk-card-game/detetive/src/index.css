@@ -14,17 +14,45 @@ code {
 
 .board{
   background-color: blue;
-  width: min;
+  width: 40%;
+  float: left;
 
 }
+.formulario{
+  width: 20%;
+  background: tomato;
+  float: right;
+}
+
+.hand{
+  width: 20%;
+  height: 500px;
+  background: royalblue;
+  float: right;
+}
+
+
+.dado{
+  background :seashell;
+  border: 3px solid black;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  float: left;
+}
+
 .cell{
-  border: 1px solid #555;
+  border: 2px solid transparent;
   width: 15px;
   height: 15px;
   line-height: 15px;
   text-align: center;
   background-color: rgb(197, 69, 114);
 }
+.cellEnabled{
+  border: 2px solid darkorange;
+}
+
 .cellStart{
   background-color: rgb(255, 0, 0);
 }
@@ -40,3 +68,5 @@ code {
 .cellNull{
   background-color: rgb(0, 0, 0);
 }
+
+
