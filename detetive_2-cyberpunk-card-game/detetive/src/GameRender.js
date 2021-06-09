@@ -1,6 +1,8 @@
 //import { func } from 'prop-types';
 import React from 'react';
 //const util = require('util');
+//import {} from './Game'
+import {acusar, mockSegredo} from './GameLogic'
 
 class GameRender extends React.Component {
 
@@ -30,7 +32,20 @@ class GameRender extends React.Component {
         const formulario = this.renderFormulario()
         const hand = this.renderHand()
         const dado =  this.renderDado()
-        return <div className="main">{board}{dado}{formulario}{hand}</div>
+        const acusacao = this.renderAcusar()
+        return <div className="main">{board}{dado}{acusacao}{formulario}{hand}</div>
+    }
+
+    renderAcusar(){
+        const ctx = this.props.ctx;
+        const state = this.props.G;
+        //let cpuCost = getAttackProp(card, index, 'cpu_cost');
+        //let damage = getAttackProp(card, index, 'damage');
+        let isDisabled = false//(card.usedAttacks && card.usedAttacks.includes(index)) || !card.booted;
+        let onClick = () => this.props.moves.acusar(mockSegredo());
+        return <div key='acusar'><button onClick={onClick} disabled={isDisabled}>Acusar</button></div>;
+        //const id = el.target.id.slice(2);
+        //.mover(id);
     }
 
     renderBoard() { //create board
@@ -716,24 +731,31 @@ class GameRender extends React.Component {
         //});
         
         return <div className="hand">
+            <h3>Mão</h3>
+            <h4>Quem:</h4>
             {playerHandPersonagem}
+            <h4>Como:</h4>
             {playerHandArma}
+            <h4>Onde:</h4>
             {playerHandLocal}
         </div>
     
-}
+    }
 
     renderCardHand(c, tipo){
         const {currentPlayer} = this.props.ctx;
         const currentPlayerId = "player_" + currentPlayer;
-        var mao = []
+        var mao = null
 
         if(c.jogador && c.jogador === currentPlayerId)
-            mao.push(c.label);
+            mao = c.label;
 
-        return <div className={tipo} key={c.label}>
-            {mao}
-        </div>
+        if (!mao) 
+            return null;
+        else 
+            return <div className={tipo} key={c.label}>
+                {mao}
+            </div>
         
     }
 
@@ -795,7 +817,6 @@ class GameRender extends React.Component {
     }
 
 }
-
 
 export default GameRender;
 

@@ -5,7 +5,8 @@ import GameRender from './GameRender';
 const App = Client({
   game: Detetive,
   board: GameRender,
-  debug: false,
+  //debug: false,
+  numPlayers: 6,
 
   //this.client.start();
   //this.rootElement = rootElement;
@@ -13,6 +14,10 @@ const App = Client({
   //this.attachListeners();
   //this.client.subscribe(state => this.update(state)); //callbacks for every state change
   
+  /*
+  tentar colocar dinamica de mais de um jogador, telas individuais ou algo assim
+  https://github.com/boardgameio/boardgame.io/blob/main/docs/documentation/turn-order.md
+  */
 });
 
 

@@ -72,7 +72,7 @@ function createBoard() {
     cells.celula[6] = 'cell cellNull'
     cells.celula[7] = 'cell cellNull'
     cells.celula[8] = 'cell cellNull'
-    cells.celula[9] = 'cell cellStart'
+    cells.celula[9] = 'cell cellStart'; cells.estado[9] = '0'//id jogador
     cells.celula[10] = 'cell cellNull'
     cells.celula[11] = 'cell cellNull'
     cells.celula[12] = 'cell cellNull'
@@ -230,7 +230,7 @@ function createBoard() {
     cells.celula[164] = 'cell cellLivre'
     cells.celula[165] = 'cell cellLivre'
     cells.celula[166] = 'cell cellLivre'
-    cells.celula[167] = 'cell cellStart'//; cells.estado[167] = '167'
+    cells.celula[167] = 'cell cellStart'; cells.estado[167] = '2'
     cells.celula[168] = 'cell cellNull'
     cells.celula[169] = 'cell cellLivre'
     cells.celula[170] = 'cell cellLivre'
@@ -287,7 +287,7 @@ function createBoard() {
     cells.celula[221] = 'cell cellLivre'
     cells.celula[222] = 'cell cellLivre'
     cells.celula[223] = 'cell cellLivre'
-    cells.celula[224] = 'cell cellLivre'; cells.estado[224] = '0'
+    cells.celula[224] = 'cell cellLivre'
     cells.celula[225] = 'cell cellLivre'
     cells.celula[226] = 'cell cellLivre'
     cells.celula[227] = 'cell cellLivre'
@@ -471,7 +471,7 @@ function createBoard() {
     cells.celula[405] = 'cell cellNull'
     cells.celula[406] = 'cell cellNull'
     cells.celula[407] = 'cell cellNull'
-    cells.celula[408] = 'cell cellStart'//; cells.estado[408] = '408'
+    cells.celula[408] = 'cell cellStart'; cells.estado[408] = '3'
     cells.celula[409] = 'cell cellLivre'
     cells.celula[410] = 'cell cellLivre'
     cells.celula[411] = 'cell cellLivre'
@@ -542,7 +542,7 @@ function createBoard() {
     cells.celula[476] = 'cell cellLivre'
     cells.celula[477] = 'cell cellLivre'
     cells.celula[478] = 'cell cellLivre'
-    cells.celula[479] = 'cell cellStart'//; cells.estado[479] = '479'
+    cells.celula[479] = 'cell cellStart'; cells.estado[479] = '4'
     cells.celula[480] = 'cell cellNull'
     cells.celula[481] = 'cell cellNull'
     cells.celula[482] = 'cell cellNull'
@@ -646,7 +646,7 @@ function createBoard() {
     cells.celula[580] = 'cell cellNull'
     cells.celula[581] = 'cell cellNull'
     cells.celula[582] = 'cell cellNull'
-    cells.celula[583] = 'cell cellStart'//; cells.estado[583] = '583'
+    cells.celula[583] = 'cell cellStart'; cells.estado[583] = '5'
     cells.celula[584] = 'cell cellNull'
     cells.celula[585] = 'cell cellNull'
     cells.celula[586] = 'cell cellNull'
@@ -668,12 +668,22 @@ function createBoard() {
 }
 
 function getPlayerId(ctx) {
+
+    //currentState.players[playerId].posicao = parseInt(idCelula)
+    
+    //player_1:{
+    //   posicao: 224,
+    //    peca: 'Srta Rosa',
+    //    assumido: null
+    //}
+    
     return "player_" + ctx.currentPlayer;
 }
 
 function sortCartas() {
     /*
     sortear cartas dos 3 tipos dependendo do numero de jogadores
+    sortear solucao e colocar jogador solucao
     */
 
     return {
@@ -701,72 +711,92 @@ function sortCartas() {
             label: 'Coronel Mostarda',
             jogador: 'player_1'
         }],
-        arma: [
-            {
-                label: 'Corda',
-                jogador:'player_1'
-            },
-            {
-                label: 'Revólver',
-                jogador: "player_0"
-            },
-            {
-                label: 'Cano',
-                jogador: "player_0"
-            },
-            {
-                label: 'Chave Inglesa',
-                jogador: "player_0"
-            },
-            {
-                label: 'Faca',
-                jogador: 'player_1'
-            },
-            {
-                label: 'Candelabro',
-                jogador: 'player_1'
-            },
+        arma: [{
+            label: 'Corda',
+            jogador: 'player_1'
+        },
+        {
+            label: 'Revólver',
+            jogador: "player_0"
+        },
+        {
+            label: 'Cano',
+            jogador: "player_0"
+        },
+        {
+            label: 'Chave Inglesa',
+            jogador: "player_0"
+        },
+        {
+            label: 'Faca',
+            jogador: 'player_1'
+        },
+        {
+            label: 'Candelabro',
+            jogador: 'player_1'
+        },
         ],
-        local: [
-            {
-                label: 'Sala de jantar',
-                jogador: "player_1"
-            },
-            {
-                label: 'Hall',
-                jogador: "player_0"
-            },
-            {
-                label: 'Sala de estar',
-                jogador: "player_0"
-            },
-            {
-                label: 'Cozinha',
-                jogador: "player_0"
-            },
-            {
-                label: 'Salão de festas',
-                jogador: "player_1"
-            },
-            {
-                label: 'Sala de música',
-                jogador: "player_1"
-            },
-            {
-                label: 'Sala de jogos',
-                jogador: "player_1"
-            },
-            {
-                label: 'Biblioteca',
-                jogador: "player_1"
-            },
-            {
-                label: 'Escritório',
-                jogador: "player_0"
-            },
-
+        local: [{
+            label: 'Sala de jantar',
+            jogador: "player_1"
+        },
+        {
+            label: 'Hall',
+            jogador: "player_0"
+        },
+        {
+            label: 'Sala de estar',
+            jogador: "player_0"
+        },
+        {
+            label: 'Cozinha',
+            jogador: "player_0"
+        },
+        {
+            label: 'Salão de festas',
+            jogador: "player_1"
+        },
+        {
+            label: 'Sala de música',
+            jogador: "player_1"
+        },
+        {
+            label: 'Sala de jogos',
+            jogador: "player_1"
+        },
+        {
+            label: 'Biblioteca',
+            jogador: "player_1"
+        },
+        {
+            label: 'Escritório',
+            jogador: "player_0"
+        },
         ]
     }
-    
+
 }
-export { calculaCelulasHabitadas, createBoard, getPlayerId, sortCartas }
+//resgatar o personagem
+function sortPlayers() { //player_0 a player_5 o id do player não fixo, se ele escoljer dona violeta sorteia um start pra ela e devolve pro player quer solicitou
+    return [{
+        posicao: null,
+        personagem: 'Dona Violeta' //cartas.personagem.label // 'Dona Violeta'
+    }, {
+        posicao: null,
+        personagem: 'Srta Rosa' 
+    }, {
+        posicao: null,
+        personagem: 'Dona Branca' 
+    }, {
+        posicao: null,
+        personagem: 'Professor Black' 
+    }, {
+        posicao: null,
+        personagem: 'Sr. Marinho' 
+    }, {
+        posicao: null,
+        personagem: 'Coronel Mostarda' 
+    }]
+}
+
+export { calculaCelulasHabitadas, createBoard, getPlayerId, sortCartas, sortPlayers }
