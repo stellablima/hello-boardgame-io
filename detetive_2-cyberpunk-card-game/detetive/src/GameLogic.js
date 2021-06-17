@@ -1,9 +1,7 @@
-//import CardPrototypes from './CardPrototypes.json';
-//const util = require('util');
 import { INVALID_MOVE } from 'boardgame.io/core';
-import {calculaCelulasHabitadas, createBoard, getPlayerId, sortCartas} from './GameHelpers'
+import {calculaCelulasHabitadas, createBoard, getPlayerId, sortCartas, arraysEqual, getActivePlayer} from './GameHelpers'
 
-function setup() {    
+function setup(ctx) {    
 
     let cells = createBoard()
     let cartas = sortCartas()
@@ -12,23 +10,24 @@ function setup() {
         celula: cells.celula, //classes refletidas no front
         estado: cells.estado, //null ou preenchida com o id do jogador
         celulasHabilitadas: [],
-        players: { //label nao tem nada a ver com cartas que jogadores possuem na mao, é so referente a posição no tbuleiro, as cartas que os jogadores tem na mão esta decalrado dentro do elemento cartas
+        //futuramente fazer os ids sequenciais e dinamico não mockado, vou receber do front e jogo vai ser inteligente o suficiente para organizar os ids personagens e posição de cada um, quando isso acontecer modificar a função turn, onEnd para a forma simples anterior
+        players: { //label nao tem nada a ver com cartas que jogadores possuem na mao, é so referente a posição no tabuleiro pois elas sao fixas começando sempre em determinada casa conforme as regras passsada pelo prof, as cartas que os jogadores tem na mão esta declarado dentro do elemento cartas
             player_0: { //peca_0, o jogador vai assumindo o papel que deseja no lobby, peças sem jogadores ativos ficaram inertes no tabuleiro conforme as regras, ordem e turnos dedfault apenas pulando quando null jogador
                 posicao: 9,
                 peca: 'Dona Violeta', //cartas.personagem.label //  // representa a PEÇA nao a carta 
-                assumido: null,
+                assumido: '0',
                 gameover: null
             },
             player_1:{
-                posicao: 14,
+                posicao: 14, /* perspectiva, ele monta o objeto com as informações que recebeu do lobby, ele recebe o id do jogador e a peça que ele escolheu, a partir dai obj consulta um prototipo pra saber a posição com o nome da carta que ele escolheu */
                 peca: 'Srta Rosa',
-                assumido: null,
+                assumido: '1',
                 gameover: null
             },
             player_2:{
                 posicao: 167,
                 peca: 'Dona Branca',
-                assumido: null,
+                assumido: '2',
                 gameover: null
             },
             player_3:{
@@ -54,7 +53,9 @@ function setup() {
         dado: null,
         cartas: cartas,
         segredo: mockSegredo(),
-        ganhador: null
+        ganhador: null,
+        playOrder: ctx.playOrder,//ctx.playOrder, //1,3,5 fazer teste como receber idspickados
+        playOrderPos: 0,
     }
 
     return retorno
@@ -62,68 +63,51 @@ function setup() {
 
 function mover(currentState, ctx, idCelula) {       //g == state
     //console.log('celula: ' + currentState.celula[idCelula].indexOf("cellNull"))
+    /* para acomodar um jogador na mesma celula a primeira condição tem que ser revisada, adicionando id+ ''+id, ex: 0 puxa 5, ficaria 05 na celula, posteriormente ver como ficaria com o front de imgs */
     if (currentState.estado[idCelula] !== null ||!(currentState.celula[idCelula].includes("cellEnabled"))) {// currentState.celula[idCelula].indexOf("cellNull") !== -1 ||  
         return INVALID_MOVE;
     }
 
-    let playerId = getPlayerId(ctx);
-    //let currentPlayer = this.state[playerId];
+    let playerId = getPlayerId(ctx); //let currentPlayer = this.state[playerId];
     var idCelulaAntiga = currentState.players[playerId].posicao
     currentState.estado[idCelula] = ctx.currentPlayer
     currentState.estado[idCelulaAntiga] = null
     currentState.players[playerId].posicao = parseInt(idCelula)
 
+    //limpar celulas target ao final de cada turno, ou ao final de cada movimento?
     currentState.celulasHabilitadas.forEach(celula => {
         currentState.celula[celula] = currentState.celula[celula].slice(0, -7);
     });
-    /*
-    colocar id da celula clicada no current state
-    como celulaTarget ou algo assim
 
-    NAO, ele nao precisa enviar state e ctx na chamada da função somente parametros excedebntes
-
-    tirar posição marcada antiga
-
-    usar prototipo como base para seleção
-
-    sempre no inicio de um turno rodar dado automaticamente
-    mover, acusar ou palpitar
-
-    fazer o objeto jogador guardar a posição atual
-    para mover tirando da posição atual e calcular movimentos
-
-    agrupar estado e celula no board
-    agrupar jogadores em jogadores
-    */
-
-    /*
-    for(var i=0;i<600;i++){
-        if(currentState.celula[i].includes('Disabled'))
-        currentState.celula[i] = currentState.celula[i].slice(0, -8);
-    }*/
-
+    ctx.events.endTurn()
     
 }
-
+//sngm ganha ou perde no palpite e sim os outros jogadores so mostram a carta que tem
 function palpitar(currentState, ctx){
-
+//ctx.events.setActivePlayers({ others: 'palpite', moveLimit: 1 })
 }
-
-function acusar(currentState, ctx, segredo){
+//arrumar acusar futuramente celulas ativas se necessario
+function acusar(currentState, ctx, segredo=[1,1,1]){//0,0,0
 //abrir poupup com opções
-//mock
-    if(segredo === currentState.segredo){
+    if(arraysEqual(segredo, currentState.segredo)){
         currentState.ganhador = getPlayerId(ctx);
-        //return true
     }
     else {
-        currentState.players[getPlayerId(ctx)].gameover = true
-        //return false
+        currentState.players[getPlayerId(ctx)].gameover = true //verificar a atual necessidade pois agora foi implementado uma lista de players ativos no currentstate/G manipulada pelo codigo onde todos os jogadores estao lá
+        const index = currentState.playOrder.indexOf(ctx.currentPlayer);
+        currentState.playOrder.splice(index, 1);
+        //estou me auto eliminando porque dei palpite errado, como o proximo da pilha vai assumir minha posição tem que decrementar referencia https://codesandbox.io/s/boardgameio-elimination-demo-2rezv?file=/src/Game.js:1125-1508
+        //o botão do palpite so é clicavel quando o cara ta na partida
+        if (index === currentState.playOrderPos) {
+            currentState.playOrderPos--;
+        }
+        ctx.events.endTurn()
     }
+
 }
 
 function turnOnBegin(currentState, ctx){
-
+    //currentState.playOrder = getActivePlayer(currentState) // ele nao é inteligente o suficiente pra começar o turno so com jogadores ativos// 1,3,5 setado G e ctx manualmente, setar so G nao foi suficiente pra o ctx pegar por si só //default é 0,1..5
     currentState.dado = Math.floor(Math.random() * 6 + 1);
 
     currentState.celulasHabilitadas = calculaCelulasHabitadas(currentState, ctx)
@@ -137,11 +121,13 @@ function turnOnBegin(currentState, ctx){
 
 function mockState(){
     //jogadores pickados, depois retornar configuração de skin e outras configurações do jogo
-    //push ids recebidos por ordem
-    return [1,3,5]
-  }
+    //push ids recebidos por ordem, posição que cada jogador assumiu
+    return [0,1,2]
+}
   
-  function mockSegredo(){
-    return[0,0,0]
-  }
+function mockSegredo(){
+    return [0,0,0]
+}
+
+
 export { setup, palpitar, acusar, mover, turnOnBegin, mockState, mockSegredo };

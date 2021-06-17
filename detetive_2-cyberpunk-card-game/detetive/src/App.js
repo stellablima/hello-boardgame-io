@@ -6,7 +6,7 @@ const App = Client({
   game: Detetive,
   board: GameRender,
   //debug: false,
-  numPlayers: 6,
+  numPlayers: 3,
 
   //this.client.start();
   //this.rootElement = rootElement;

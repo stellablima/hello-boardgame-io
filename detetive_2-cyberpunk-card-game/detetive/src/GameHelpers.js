@@ -1,10 +1,12 @@
-//até a lógica do circulo servve, o resto joga fora e faz pilha
+import { mockState } from "./GameLogic";
+
+//até a lógica do circulo serve, o resto joga fora e faz pilha
 function calculaCelulasHabitadas(currentState, ctx) {
     let celulasHabilitadas = []
     let celulasHabilitadasSemClasse = [[], []]
 
     let playerId = "player_" + ctx.currentPlayer;
-
+    console.log(playerId)
     let celulaId = currentState.players[playerId].posicao
 
     let celulahd = celulaId, celulahe = celulaId, celulavb = celulaId, celulavt = celulaId
@@ -779,24 +781,75 @@ function sortCartas() {
 //resgatar o personagem
 function sortPlayers() { //player_0 a player_5 o id do player não fixo, se ele escoljer dona violeta sorteia um start pra ela e devolve pro player quer solicitou
     return [{
-        posicao: null,
+        posicao: 9,
         personagem: 'Dona Violeta' //cartas.personagem.label // 'Dona Violeta'
     }, {
-        posicao: null,
+        posicao: 14,
         personagem: 'Srta Rosa' 
     }, {
-        posicao: null,
+        posicao: 167,
         personagem: 'Dona Branca' 
     }, {
-        posicao: null,
+        posicao: 408,
         personagem: 'Professor Black' 
     }, {
-        posicao: null,
+        posicao: 479,
         personagem: 'Sr. Marinho' 
     }, {
-        posicao: null,
+        posicao: 583,
         personagem: 'Coronel Mostarda' 
     }]
 }
 
-export { calculaCelulasHabitadas, createBoard, getPlayerId, sortCartas, sortPlayers }
+function arraysEqual(a, b) {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
+  
+    // If you don't care about the order of the elements inside
+    // the array, you should sort both arrays here.
+    // Please note that calling sort on an array will modify that array.
+    // you might want to clone your array first.
+  
+    for (var i = 0; i < a.length; ++i) {
+      if (a[i] !== b[i]) return false;
+    }
+    return true;
+}
+
+/*função zinha da pilha e função de sort cartas*/
+function removeActivePlayer(){
+
+}
+function getActivePlayer(currentState, ctx){
+    
+    if(!currentState) return mockState() //inicio do jogo,sem logica de pegar jogadores no lobby por enquanto
+    else {
+        var activePlayers = []
+        for(var i = 0 ; i< Object.keys(currentState.players).length; i++){
+            if(currentState.players['player_'+i].assumido != null && currentState.players['player_'+i].gameover == null)
+                activePlayers.push(currentState.players['player_'+i].assumido)
+        }
+           console.log(activePlayers)
+        return activePlayers
+    }
+}
+
+//currentState.players[getPlayerId(ctx)].gameover = true
+/* setActivePlayers(['0', '3']);
+implementar função get active players, depois deletePlayer etc
+passar o que ele espera receber no acusar
+pega todos os jogadores com gameover null
+console log pra que ele espera receber
+
+activePlayers: Object {
+1: stage
+3: stage
+5: stage
+}
+
+implementar stage quando a visao do joga estiver ok
+*/
+
+
+export { calculaCelulasHabitadas, createBoard, getPlayerId, sortCartas, sortPlayers, arraysEqual, removeActivePlayer, getActivePlayer}

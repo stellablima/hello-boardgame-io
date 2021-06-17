@@ -2,7 +2,7 @@
 import React from 'react';
 //const util = require('util');
 //import {} from './Game'
-import {acusar, mockSegredo} from './GameLogic'
+//import {acusar, mockSegredo} from './GameLogic'
 
 class GameRender extends React.Component {
 
@@ -37,12 +37,12 @@ class GameRender extends React.Component {
     }
 
     renderAcusar(){
-        const ctx = this.props.ctx;
-        const state = this.props.G;
+        //const ctx = this.props.ctx;
+        //const state = this.props.G;
         //let cpuCost = getAttackProp(card, index, 'cpu_cost');
         //let damage = getAttackProp(card, index, 'damage');
         let isDisabled = false//(card.usedAttacks && card.usedAttacks.includes(index)) || !card.booted;
-        let onClick = () => this.props.moves.acusar(mockSegredo());
+        let onClick = () =>  this.props.moves.acusar();// default na funçaõ// this.props.moves.acusar(mockSegredo());
         return <div key='acusar'><button onClick={onClick} disabled={isDisabled}>Acusar</button></div>;
         //const id = el.target.id.slice(2);
         //.mover(id);
