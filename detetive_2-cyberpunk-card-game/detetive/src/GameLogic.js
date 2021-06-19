@@ -4,7 +4,7 @@ import {calculaCelulasHabitadas, createBoard, getPlayerId, sortCartas, arraysEqu
 function setup(ctx) {    
 
     let cells = createBoard()
-    let cartas = sortCartas()
+    let cartas = sortCartas(ctx)
 
     var retorno = { //depois agrupar celula e estado no obj cells
         celula: cells.celula, //classes refletidas no front
@@ -51,8 +51,8 @@ function setup(ctx) {
 /*obetivo aqui é descobir uma forma de forçar ids diferentes através de mocks setup */
         },
         dado: null,
-        cartas: cartas,
-        segredo: mockSegredo(),
+        cartas: cartas[0],
+        segredo: cartas[1],//mockSegredo(),
         ganhador: null,
         playOrder: ctx.playOrder,//ctx.playOrder, //1,3,5 fazer teste como receber idspickados
         playOrderPos: 0,

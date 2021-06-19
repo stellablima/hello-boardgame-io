@@ -32,8 +32,9 @@ class GameRender extends React.Component {
         const formulario = this.renderFormulario()
         const hand = this.renderHand()
         const dado =  this.renderDado()
+        const palpite = this.renderPalpite()
         const acusacao = this.renderAcusar()
-        return <div className="main">{board}{dado}{acusacao}{formulario}{hand}</div>
+        return <div className="main">{board}{dado}{palpite}{acusacao}{formulario}{hand}</div>
     }
 
     renderAcusar(){
@@ -46,6 +47,13 @@ class GameRender extends React.Component {
         return <div key='acusar'><button onClick={onClick} disabled={isDisabled}>Acusar</button></div>;
         //const id = el.target.id.slice(2);
         //.mover(id);
+    }
+
+    renderPalpite(){
+
+        let isDisabled = false
+        let onClick = () =>  this.props.moves.palpite();
+        return <div key='palpite'><button onClick={onClick} disabled={isDisabled}>Palpitar</button></div>;
     }
 
     renderBoard() { //create board

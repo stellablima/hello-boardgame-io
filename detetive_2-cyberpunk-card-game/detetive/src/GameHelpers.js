@@ -6,7 +6,7 @@ function calculaCelulasHabitadas(currentState, ctx) {
     let celulasHabilitadasSemClasse = [[], []]
 
     let playerId = "player_" + ctx.currentPlayer;
-    console.log(playerId)
+    //console.log(playerId)
     let celulaId = currentState.players[playerId].posicao
 
     let celulahd = celulaId, celulahe = celulaId, celulavb = celulaId, celulavt = celulaId
@@ -49,7 +49,7 @@ function calculaCelulasHabitadas(currentState, ctx) {
     for (let index = 0; index < celulasHabilitadas.length; index++) {
         //console.log(celulasHabilitadas[index])
         if (pilhaRetirar.includes(celulasHabilitadas[index]))
-            console.log(celulasHabilitadas.splice(index));
+        celulasHabilitadas.splice(index)//  console.log();
     }
     return celulasHabilitadas
 }
@@ -682,101 +682,138 @@ function getPlayerId(ctx) {
     return "player_" + ctx.currentPlayer;
 }
 
-function sortCartas() {
-    /*
-    sortear cartas dos 3 tipos dependendo do numero de jogadores
-    sortear solucao e colocar jogador solucao
-    */
+function sortCartas(ctx) {
 
-    return {
+    let numPlayers = ctx.numPlayers
+
+    let cartas = {
         personagem: [{
             label: 'Dona Violeta',
-            jogador: 'player_1'
+            jogador: null
         },
         {
             label: 'Srta Rosa',
-            jogador: 'player_0'
+            jogador: null
         },
         {
             label: 'Dona Branca',
-            jogador: 'player_0'
+            jogador: null
         },
         {
             label: 'Professor Black',
-            jogador: 'player_0'
+            jogador: null
         },
         {
             label: 'Sr. Marinho',
-            jogador: 'player_1'
+            jogador: null
         },
         {
             label: 'Coronel Mostarda',
-            jogador: 'player_1'
+            jogador: null
         }],
         arma: [{
             label: 'Corda',
-            jogador: 'player_1'
+            jogador: null
         },
         {
             label: 'Revólver',
-            jogador: "player_0"
+            jogador: null
         },
         {
             label: 'Cano',
-            jogador: "player_0"
+            jogador: null
         },
         {
             label: 'Chave Inglesa',
-            jogador: "player_0"
+            jogador: null
         },
         {
             label: 'Faca',
-            jogador: 'player_1'
+            jogador: null
         },
         {
             label: 'Candelabro',
-            jogador: 'player_1'
+            jogador: null
         },
         ],
         local: [{
             label: 'Sala de jantar',
-            jogador: "player_1"
+            jogador: null
         },
         {
             label: 'Hall',
-            jogador: "player_0"
+            jogador: null
         },
         {
             label: 'Sala de estar',
-            jogador: "player_0"
+            jogador: null
         },
         {
             label: 'Cozinha',
-            jogador: "player_0"
+            jogador: null
         },
         {
             label: 'Salão de festas',
-            jogador: "player_1"
+            jogador: null
         },
         {
             label: 'Sala de música',
-            jogador: "player_1"
+            jogador: null
         },
         {
             label: 'Sala de jogos',
-            jogador: "player_1"
+            jogador: null
         },
         {
             label: 'Biblioteca',
-            jogador: "player_1"
+            jogador: null
         },
         {
             label: 'Escritório',
-            jogador: "player_0"
+            jogador: null
         },
         ]
     }
 
+    let personagemSegredo = Math.floor(Math.random() * Object.keys(cartas.personagem).length)
+    let armaSegredo = Math.floor(Math.random() * Object.keys(cartas.arma).length)
+    let localSegredo = Math.floor(Math.random() * Object.keys(cartas.local).length)
+    let segredo = [personagemSegredo, armaSegredo, localSegredo]
+
+    cartas.personagem[segredo[0]].jogador = 'segredo'
+    cartas.arma[segredo[1]].jogador = 'segredo'
+    cartas.local[segredo[2]].jogador = 'segredo'
+
+    let qtdCartas = Object.keys(cartas.personagem).length + Object.keys(cartas.arma).length + Object.keys(cartas.local).length - segredo.length
+
+    const arr = [];
+
+    for (let i = 0; i < qtdCartas; ) {
+        for(let y = 0; y < numPlayers; y++){
+            i++
+            arr.push(`player_${y}`);
+        }
+    }       
+
+    for (let i = 0; i < arr.length; i++) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+
+    cartas.personagem.forEach(card => {
+        if(card.jogador == null)
+        card.jogador = arr.pop()
+    });
+    cartas.arma.forEach(card => {
+        if(card.jogador == null)
+        card.jogador = arr.pop()
+    });
+    cartas.local.forEach(card => {
+        if(card.jogador == null)
+        card.jogador = arr.pop()
+    });
+
+    return [cartas,segredo]
 }
 //resgatar o personagem
 function sortPlayers() { //player_0 a player_5 o id do player não fixo, se ele escoljer dona violeta sorteia um start pra ela e devolve pro player quer solicitou
@@ -830,7 +867,7 @@ function getActivePlayer(currentState, ctx){
             if(currentState.players['player_'+i].assumido != null && currentState.players['player_'+i].gameover == null)
                 activePlayers.push(currentState.players['player_'+i].assumido)
         }
-           console.log(activePlayers)
+           //console.log(activePlayers)
         return activePlayers
     }
 }
