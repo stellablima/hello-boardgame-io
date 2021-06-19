@@ -778,7 +778,7 @@ function sortCartas(ctx) {
     let personagemSegredo = Math.floor(Math.random() * Object.keys(cartas.personagem).length)
     let armaSegredo = Math.floor(Math.random() * Object.keys(cartas.arma).length)
     let localSegredo = Math.floor(Math.random() * Object.keys(cartas.local).length)
-    let segredo = [personagemSegredo, armaSegredo, localSegredo]
+    let segredo = [`${personagemSegredo}`, `${armaSegredo}`, `${localSegredo}`]
 
     cartas.personagem[segredo[0]].jogador = 'segredo'
     cartas.arma[segredo[1]].jogador = 'segredo'

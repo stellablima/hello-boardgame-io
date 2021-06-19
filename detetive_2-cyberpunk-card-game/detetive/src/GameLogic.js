@@ -83,14 +83,24 @@ function mover(currentState, ctx, idCelula) {       //g == state
     
 }
 //sngm ganha ou perde no palpite e sim os outros jogadores so mostram a carta que tem
-function palpitar(currentState, ctx){
+function palpitar(currentState, ctx, segredo=[1,1,1]){
 //ctx.events.setActivePlayers({ others: 'palpite', moveLimit: 1 })
+    //personagem//arma//local
+    /*
+    players ativos em sentido horario deverao mostrar cartas que tenham no segredo na tela do jogador da partida
+
+    game over
+    win
+    popup
+    */
+
 }
 //arrumar acusar futuramente celulas ativas se necessario
-function acusar(currentState, ctx, segredo=[1,1,1]){//0,0,0
+function acusar(currentState, ctx, segredo){
 //abrir poupup com opções
     if(arraysEqual(segredo, currentState.segredo)){
         currentState.ganhador = getPlayerId(ctx);
+        console.log('mensagem ganhador')
     }
     else {
         currentState.players[getPlayerId(ctx)].gameover = true //verificar a atual necessidade pois agora foi implementado uma lista de players ativos no currentstate/G manipulada pelo codigo onde todos os jogadores estao lá
@@ -101,6 +111,7 @@ function acusar(currentState, ctx, segredo=[1,1,1]){//0,0,0
         if (index === currentState.playOrderPos) {
             currentState.playOrderPos--;
         }
+        console.log('mensagem desclassificado')
         ctx.events.endTurn()
     }
 

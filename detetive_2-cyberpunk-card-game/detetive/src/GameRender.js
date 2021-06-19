@@ -38,15 +38,85 @@ class GameRender extends React.Component {
     }
 
     renderAcusar(){
+        let acusarFormulario = this.renderAcusarFormulario()
         //const ctx = this.props.ctx;
         //const state = this.props.G;
         //let cpuCost = getAttackProp(card, index, 'cpu_cost');
         //let damage = getAttackProp(card, index, 'damage');
         let isDisabled = false//(card.usedAttacks && card.usedAttacks.includes(index)) || !card.booted;
-        let onClick = () =>  this.props.moves.acusar();// default na funçaõ// this.props.moves.acusar(mockSegredo());
-        return <div key='acusar'><button onClick={onClick} disabled={isDisabled}>Acusar</button></div>;
+        let onClick = () =>  {
+            document.getElementById('modalAcusacao').style.display='none';
+            
+            var choices = [];
+
+            var elsPersonagem = document.getElementsByName('personagemRadio');
+            for (var i=0;i<elsPersonagem.length;i++){
+                if ( elsPersonagem[i].checked ) {
+                    choices.push(elsPersonagem[i].value);
+                }
+            }
+            var elsArma = document.getElementsByName('armaRadio');
+            for (var i=0;i<elsArma.length;i++){
+                if ( elsArma[i].checked ) {
+                    choices.push(elsArma[i].value);
+                }
+            }
+            var elsLocal = document.getElementsByName('localRadio');
+            for (var i=0;i<elsLocal.length;i++){
+                if ( elsLocal[i].checked ) {
+                    choices.push(elsLocal[i].value);
+                }
+            }
+            console.log(choices)
+            this.props.moves.acusar(choices);
+
+        }// default na funçaõ// this.props.moves.acusar(mockSegredo());
+        let openModal = () => document.getElementById('modalAcusacao').style.display='block'
+        let closeModal =  () => document.getElementById('modalAcusacao').style.display='none'
+        return <div key='acusar'>
+            
+            <button onClick={openModal} className="btnAcusar">Acusar</button>
+            
+            <div id="modalAcusacao" className="modalAcusar">
+                <div className="modalAcusarBox">
+                    <div className="">
+                        <span onClick={closeModal} className="modalAcusarClose">&times;</span>
+                        {acusarFormulario}
+                        <button onClick={onClick} disabled={isDisabled}>OK</button>
+                    </div>
+                </div>
+            </div>
+            
+            </div>;
         //const id = el.target.id.slice(2);
         //.mover(id);
+    }
+    renderAcusarFormulario() {//futuramente trocar tudo pelo label {} das cartas, fazer laço e otimizar de alguma forma
+        const cartas = this.props.G.cartas;
+        const personagens = cartas.personagem.map((c, index) => this.renderListRadio(c.label,'personagem', index));
+        const armas = cartas.arma.map((c, index) => this.renderListRadio(c.label,'arma', index));
+        const locais = cartas.local.map((c, index) => this.renderListRadio(c.label,'local', index));
+        return <div className="">
+            <h3>Formulário</h3>
+            <h4>Quem:</h4>
+            <ul>
+                {personagens}
+            </ul>
+            <h4>Como:</h4>
+            <ul>
+                {armas}
+            </ul>
+            <h4>Onde:</h4>
+            <ul>
+               {locais}
+            </ul>
+        </div>
+    }
+    renderListRadio(label, tipo, index) {
+        return <li key={label}>
+            <input type="radio" name={`${tipo}`+'Radio'} value={index}></input>
+            <label className="container">{label}</label>
+        </li>
     }
 
     renderPalpite(){
@@ -815,6 +885,7 @@ class GameRender extends React.Component {
             <label className="container">{label}</label>
         </li>
     }
+
     renderDado(){
         const state = this.props.G;
         var dado = state.dado;//classe
