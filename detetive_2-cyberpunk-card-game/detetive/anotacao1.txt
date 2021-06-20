@@ -1,0 +1,205 @@
+        //ctx.events.setActivePlayers(ActivePlayers.OTHERS)//temporario talvez ele pegue o jogador ja desclassificado(gameover true) //removeActivePlayer()// // ({ others: 'palpite', moveLimit: 1 })
+        //ctx.events.setActivePlayers(getActivePlayer(currentState))
+        //console.log(ActivePlayers.ALL)
+        //ctx.events.endTurn()
+        //ctx.events.endPhase()
+        //entao configurar as fazes
+        //talvez a solução seja trocar por enfphase, quando um jogador sai muda de fase
+        /*
+        enquanto jogador nao sai: turno
+        phase1 =  n
+        phase2 = n -1 
+        phasen = 1 ganhador
+
+        pesquisar tbm sobre fases, talvez precise acoplar entre fases algumas funções, tipo fase de escolher o boneco, fase de jogar, fase de ver as estatisticas seila
+        */
+        //
+
+
+
+        //if (index < 0) return INVALID_MOVE; //caso tente eliminar um jogador que não esta na partida, impossivel porque é uma auto eliminação
+
+    /*
+    colocar id da celula clicada no current state
+    como celulaTarget ou algo assim
+
+    NAO, ele nao precisa enviar state e ctx na chamada da função somente parametros excedebntes
+
+    tirar posição marcada antiga
+
+    usar prototipo como base para seleção
+
+    sempre no inicio de um turno rodar dado automaticamente
+    mover, acusar ou palpitar
+
+    fazer o objeto jogador guardar a posição atual
+    para mover tirando da posição atual e calcular movimentos
+
+    agrupar estado e celula no board
+    agrupar jogadores em jogadores
+    */
+
+    /*
+    for(var i=0;i<600;i++){
+        if(currentState.celula[i].includes('Disabled'))
+        currentState.celula[i] = currentState.celula[i].slice(0, -8);
+    }*/
+
+    import {calculaCelulasHabitadas, createBoard, getPlayerId, sortCartas, arraysEqual,/* getActivePlayer removeActivePlayer*/} from './GameHelpers'
+//import { ActivePlayers } from 'boardgame.io/core';
+
+
+//import CardPrototypes from './CardPrototypes.json';
+//const util = require('util');
+
+tentar sequencial se bug sumir tirar os forces e deixar o mais prox do tuto posssivel
+
+a bomba de passar os personagens e as posições vai ficar por prototipo de carta 
+nao vai mais epgar por id, vai passar nome de carta pickada no prototico e puxar
+posição ou outros dados
+receber do lobby um objeto playeres
+
+os jogadores off serão declarados como player inativo no tabuleiro?
+sabendo que puxar a peça agora nao é mais necssario talvez não, mas nao tirar se nao for 
+necessario
+
+
+nao resolveu deixar sequencial, provavelmente é o mock do ctx, simplicar a fim de arrumar
+
+/*
+//alocar posição aleatoria a jogador e retornar posição + label
+function preConfig() {
+  let personagensPickados = mockState()
+  let posicoesPossiveis = [9,14,167,408,479,583]
+  //sortear posições possiveis dentre cartas pickadas e setar na posição do player
+  //enviar dados
+  //player_0
+  // mockando 1,3,5 players 
+  let cartas = sortCartas()
+  let players = sortPlayers()
+  let jogadoresRetorno = players
+
+  personagensPickados.map((i)=>{
+    if(!i==null){
+      jogadoresRetorno.push(posicoesPossiveis.splice(Math.floor(Math.random() * (posicoesPossiveis.length)),1))
+    }else{
+      jogadoresRetorno.push(null)
+    }
+  });
+
+  let i=0
+  jogadoresRetorno.map(j => {
+    j.posicao = jogadoresRetorno
+    //j.personagem //personagens chumbados o que muda é a posição, se tem posição é porque o boneco foi pickado por alguem 
+    //i+=1
+  })
+
+
+  return jogadoresPickados.map(i => {
+    if(i)
+      players.
+
+  })
+
+
+}*/
+/*
+  endIf: (currentState, ctx) => { //arrumar, partida nao acaba da todos de errou palpite e sim acaba para aquele jogador,
+
+    if(currentState.ganhador)
+      return { winner: ctx.currentPlayer }; //flow:{ :ctx.gameover} //ctx.gameover <-ganhador
+      //ou se nao tiver jogador ativo
+      //draw: true 
+
+
+    // if(currentState.players[getPlayerId(ctx)].gameover == true)
+    //if (IsVictory(G.cells)) {
+    //  return { winner: ctx.currentPlayer };
+   // }
+    //if (IsDraw(G.cells)) {
+    //  return { draw: true };
+    //}
+  },*/
+
+
+  //import {/*calculaCelulasHabitadas, createBoard, getPlayerId, sortCartas, sortPlayers, arraysEqual*/getActivePlayer} from './GameHelpers'
+//import { TurnOrder } from 'boardgame.io/core';
+//import { ActivePlayers } from 'boardgame.io/core';
+//import { Stage } from 'boardgame.io/core';
+//import { INVALID_MOVE } from 'boardgame.io/core';
+
+
+    // ele inicia sempre nuloTurnOrder.CUSTOM(getActivePlayer),//peça 0 x personagem.assumido = id // aqui eu consegui obrigar a apegar p jogador 1,3,5 descobrir a forma correta 
+    //ainda nao sei utilizar essa propriedade
+    //problema: setactive ta certo no gamehelper mas como o valor é sempre redefinido buga. alem disso ele tira o player do proximo turno e nao o atual
+    //activePlayers: ActivePlayers.ALL// getActivePlayer()//{ all: Stage.NULL }//ActivePlayers.ALL, //{all : ''}// { all: Stage.NULL }// 1,3,5
+
+/* 
+implementar função get active players, depois deletePlayer etc
+passar o que ele espera receber no acusar
+pega todos os jogadores com gameover null
+console log pra que ele espera receber
+
+activePlayers: Object {
+1: stage
+3: stage
+5: stage
+}
+
+implementar stage quando a visao do joga estiver ok
+
+*/
+
+    //activePlayers: ActivePlayers.OTHERS // mockState() // ActivePlayers.ALL
+    /*
+    
+    o turno termina antes de tirar o jogador atual no set others
+    se o movimento limite 1, já se movimento se limite ele ja desclassificou passar pra proxima pessoa e 
+    acusar, errar e tirar o cara passando para o proximo jogadors
+    
+    */
+
+
+          
+    //  const playerID = G.playOrder[G.playOrderPos]; // ctx.playOrder = currentState.playOrder
+    //  return ctx.playOrder.indexOf(playerID);
+      
+          //fazer botão decisão end turn pois fazer isso automaticamente buga a lógica, mesmo assim ele pula o proximo jogador quandoa cusa erradp
+    //rever toda a logica que foi feita para eliminar e nao se eliminar
+    
+    //moveLimit: 1, //ele termina o turno antes de terminar a função de acusar e tira o jogador seguinte em vez de tirar o atual quando acusa errado
+    //IMPLEMENTAR STAGE, PROVAVELMENTE NAO VAI DAR PRA USAR A REPETIÇÃOA QUI VAI TER QUE TER TURNO E FAZE DIVIDIR PRE SET PODE SER A SOLUÇÃO OU FASE 1,2...6 ATE O GAMEOVER QUANDOTIRA UM JOGADOR PROXIMA FAZE E ASSIM PODE CHAMAR A FUNÇÃO COM OUTROS DADOS
+
+          //TurnOrder.CUSTOM(mockState()),
+      //playOrder: ['1','3','5'], 
+      // Calculate the first player.
+
+              /* const handleCellClick = event => {
+             const id = parseInt(event.target.dataset.id);
+             this.client.moves.clickCell(id); //trigger the moves
+         };
+         // Attach the event listener to each of the board cells.
+         const cells = this.rootElement.querySelectorAll('.cell');
+         cells.forEach(cell => {
+             cell.onclick = handleCellClick.;
+         });
+         */
+        //this.state.
+        //console.log(el.target.id.slice(2));
+
+        //currentState.players[getPlayerId(ctx)].gameover = true
+/* setActivePlayers(['0', '3']);
+implementar função get active players, depois deletePlayer etc
+passar o que ele espera receber no acusar
+pega todos os jogadores com gameover null
+console log pra que ele espera receber
+
+activePlayers: Object {
+1: stage
+3: stage
+5: stage
+}
+
+implementar stage quando a visao do joga estiver ok
+*/
+

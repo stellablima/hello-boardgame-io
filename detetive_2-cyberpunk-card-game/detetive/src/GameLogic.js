@@ -1,5 +1,5 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
-import {calculaCelulasHabitadas, createBoard, getPlayerId, sortCartas, arraysEqual, getActivePlayer} from './GameHelpers'
+import {calculaCelulasHabitadas, createBoard, getPlayerId, sortCartas, arraysEqual} from './GameHelpers'
 
 function setup(ctx) {    
 
@@ -83,7 +83,7 @@ function mover(currentState, ctx, idCelula) {       //g == state
     
 }
 //sngm ganha ou perde no palpite e sim os outros jogadores so mostram a carta que tem
-function palpitar(currentState, ctx, segredo=[1,1,1]){
+function palpitar(currentState, ctx, segredo){
 //ctx.events.setActivePlayers({ others: 'palpite', moveLimit: 1 })
     //personagem//arma//local
     /*
@@ -93,6 +93,18 @@ function palpitar(currentState, ctx, segredo=[1,1,1]){
     win
     popup
     */
+
+    currentState.palpite = segredo
+    ctx.events.setActivePlayers({ others: 'mostrarCarta', moveLimit: 1 });
+    //ctx.events.endTurn()
+    /*
+    todos mostram cartas e por ultimo endPhase(*)
+    */
+    
+
+}
+
+function mostrarCarta(){
 
 }
 //arrumar acusar futuramente celulas ativas se necessario
@@ -141,4 +153,4 @@ function mockSegredo(){
 }
 
 
-export { setup, palpitar, acusar, mover, turnOnBegin, mockState, mockSegredo };
+export { setup, palpitar, mostrarCarta, acusar, mover, turnOnBegin, mockState, mockSegredo };

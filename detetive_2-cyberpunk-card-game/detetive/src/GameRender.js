@@ -50,19 +50,19 @@ class GameRender extends React.Component {
             var choices = [];
 
             var elsPersonagem = document.getElementsByName('personagemRadio');
-            for (var i=0;i<elsPersonagem.length;i++){
+            for (let i=0;i<elsPersonagem.length;i++){
                 if ( elsPersonagem[i].checked ) {
                     choices.push(elsPersonagem[i].value);
                 }
             }
             var elsArma = document.getElementsByName('armaRadio');
-            for (var i=0;i<elsArma.length;i++){
+            for (let i=0;i<elsArma.length;i++){
                 if ( elsArma[i].checked ) {
                     choices.push(elsArma[i].value);
                 }
             }
             var elsLocal = document.getElementsByName('localRadio');
-            for (var i=0;i<elsLocal.length;i++){
+            for (let i=0;i<elsLocal.length;i++){
                 if ( elsLocal[i].checked ) {
                     choices.push(elsLocal[i].value);
                 }
@@ -97,7 +97,6 @@ class GameRender extends React.Component {
         const armas = cartas.arma.map((c, index) => this.renderListRadio(c.label,'arma', index));
         const locais = cartas.local.map((c, index) => this.renderListRadio(c.label,'local', index));
         return <div className="">
-            <h3>Formulário</h3>
             <h4>Quem:</h4>
             <ul>
                 {personagens}
@@ -114,16 +113,67 @@ class GameRender extends React.Component {
     }
     renderListRadio(label, tipo, index) {
         return <li key={label}>
-            <input type="radio" name={`${tipo}`+'Radio'} value={index}></input>
+            <input type="radio" name={`${tipo}Radio`} value={index}></input>
             <label className="container">{label}</label>
         </li>
     }
-
     renderPalpite(){
 
         let isDisabled = false
-        let onClick = () =>  this.props.moves.palpite();
+        let onClick = () =>  {
+            this.props.moves.palpitar(['0','0','0']);
+            //renderMostrarCarta()
+        }
         return <div key='palpite'><button onClick={onClick} disabled={isDisabled}>Palpitar</button></div>;
+    }
+
+    /*aqui eu tenho que fazer o sever, colar do tictac infinito tuto pois a tela é individual para cada jogador poder ter uma ação*/
+    renderMostrarCarta(){
+        let acusarFormulario = this.renderFormulario()
+        let isDisabled = false
+        let onClick = () =>  {
+            document.getElementById('modalAcusacao').style.display='none';
+            
+            var choices = [];
+
+            var elsPersonagem = document.getElementsByName('personagemRadio');
+            for (let i=0;i<elsPersonagem.length;i++){
+                if ( elsPersonagem[i].checked ) {
+                    choices.push(elsPersonagem[i].value);
+                }
+            }
+            var elsArma = document.getElementsByName('armaRadio');
+            for (let i=0;i<elsArma.length;i++){
+                if ( elsArma[i].checked ) {
+                    choices.push(elsArma[i].value);
+                }
+            }
+            var elsLocal = document.getElementsByName('localRadio');
+            for (let i=0;i<elsLocal.length;i++){
+                if ( elsLocal[i].checked ) {
+                    choices.push(elsLocal[i].value);
+                }
+            }
+            console.log(choices)
+            this.props.moves.acusar(choices);
+
+        }
+        let openModal = () => document.getElementById('modalAcusacao').style.display='block'
+        let closeModal =  () => document.getElementById('modalAcusacao').style.display='none'
+        return <div key='acusar'>
+            
+            <button onClick={openModal} className="btnAcusar">Acusar</button>
+            
+            <div id="modalMostrarCarta" className="modalMostrarCarta">
+                <div className="modalAcusarBox">
+                    <div className="">
+                        <span onClick={closeModal} className="modalAcusarClose">&times;</span>
+                        {acusarFormulario}
+                        <button onClick={onClick} disabled={isDisabled}>OK</button>
+                    </div>
+                </div>
+            </div>
+            </div>;
     }
 
     renderBoard() { //create board
@@ -791,7 +841,6 @@ class GameRender extends React.Component {
             </table>
         </div>;
     }
-
     renderHand() {
         const {cartas} = this.props.G;
         //const personagens = cartas.personagem.map(c => this.renderPersonagemList(c.label));
@@ -819,7 +868,6 @@ class GameRender extends React.Component {
         </div>
     
     }
-
     renderCardHand(c, tipo){
         const {currentPlayer} = this.props.ctx;
         const currentPlayerId = "player_" + currentPlayer;
@@ -836,7 +884,6 @@ class GameRender extends React.Component {
             </div>
         
     }
-
     renderFormulario() {//futuramente trocar tudo pelo label {} das cartas, fazer laço e otimizar de alguma forma
         const cartas = this.props.G.cartas;
         const personagens = cartas.personagem.map(c => this.renderList(c.label));
@@ -860,18 +907,7 @@ class GameRender extends React.Component {
     }
 
     attachListeners(currentState, ctx, el) {
-        /* const handleCellClick = event => {
-             const id = parseInt(event.target.dataset.id);
-             this.client.moves.clickCell(id); //trigger the moves
-         };
-         // Attach the event listener to each of the board cells.
-         const cells = this.rootElement.querySelectorAll('.cell');
-         cells.forEach(cell => {
-             cell.onclick = handleCellClick.;
-         });
-         */
-        //this.state.
-        //console.log(el.target.id.slice(2));
+
         const id = el.target.id.slice(2);
         this.props.moves.mover(id);
         //this.setState({estado[id]:'a'});

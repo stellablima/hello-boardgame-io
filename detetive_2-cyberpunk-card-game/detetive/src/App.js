@@ -1,12 +1,14 @@
 import { Client } from 'boardgame.io/react';
 import {Detetive} from './Game';
 import GameRender from './GameRender';
+import { Local } from 'boardgame.io/multiplayer';
 
-const App = Client({
+const DetetiveClient = Client({
   game: Detetive,
   board: GameRender,
+  multiplayer: Local(),
   //debug: false,
-  numPlayers: 3,
+  numPlayers: 2,
 
   //this.client.start();
   //this.rootElement = rootElement;
@@ -21,5 +23,11 @@ const App = Client({
 });
 
 
+const App = () => (
+  <div>
+    <DetetiveClient playerID="0" />
+    <DetetiveClient playerID="1" />
+  </div>
+);
 
 export default App;
