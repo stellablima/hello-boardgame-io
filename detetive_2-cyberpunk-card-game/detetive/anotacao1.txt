@@ -203,3 +203,24 @@ activePlayers: Object {
 implementar stage quando a visao do joga estiver ok
 */
 
+    /*
+    start(){
+        const [tela, setTela] = useState('lobby'); 
+
+        switch (tela) {
+            case 'lobby':
+                return getTelaLobby();
+            case 'partida':
+                return getTelaPartida();
+        }
+
+        function getTelaLobby(){
+            return 'lobby'
+            
+        }
+        function getTelaPartida(){
+            return 'partida'
+            
+        }
+    }
+    */

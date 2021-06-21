@@ -98,6 +98,8 @@ function palpitar(currentState, ctx, segredo){
 
     currentState.palpite = segredo
     ctx.events.setActivePlayers({ others: 'mostrarCarta', moveLimit: 1 });
+    //ctx.events.setStage('mostrarCarta');
+    ///ctx.events.endStage();
     //ctx.events.endTurn()
     /*
     todos mostram cartas e por ultimo endPhase(*)
@@ -106,7 +108,7 @@ function palpitar(currentState, ctx, segredo){
 
 }
 
-function mostrarCarta(){
+function mostrarCarta(currentState, ctx,carta){
 
 }
 //arrumar acusar futuramente celulas ativas se necessario

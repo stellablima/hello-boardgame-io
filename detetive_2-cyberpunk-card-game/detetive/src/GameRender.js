@@ -6,27 +6,7 @@ import React from 'react';
 
 class GameRender extends React.Component {
 
-    /*
-    start(){
-        const [tela, setTela] = useState('lobby'); 
 
-        switch (tela) {
-            case 'lobby':
-                return getTelaLobby();
-            case 'partida':
-                return getTelaPartida();
-        }
-
-        function getTelaLobby(){
-            return 'lobby'
-            
-        }
-        function getTelaPartida(){
-            return 'partida'
-            
-        }
-    }
-    */
     render() {
         const board = this.renderBoard()
         const formulario = this.renderFormulario()
@@ -34,7 +14,8 @@ class GameRender extends React.Component {
         const dado =  this.renderDado()
         const palpite = this.renderPalpite()
         const acusacao = this.renderAcusar()
-        return <div className="main">{board}{dado}{palpite}{acusacao}{formulario}{hand}</div>
+        const mostrarCarta = this.renderMostrarCarta()
+        return <div className="main">{board}{dado}{palpite}{acusacao}{mostrarCarta}{formulario}{hand}</div>
     }
 
     renderAcusar(){
@@ -111,6 +92,27 @@ class GameRender extends React.Component {
             </ul>
         </div>
     }
+    renderMostrarCartaFormulario() {
+        const cartas = this.props.G.cartas;
+        const personagens = cartas.personagem.map((c, index) => this.renderListRadio(c.label,'personagem', index));
+        const armas = cartas.arma.map((c, index) => this.renderListRadio(c.label,'arma', index));
+        const locais = cartas.local.map((c, index) => this.renderListRadio(c.label,'local', index));
+
+        return <div className="">
+            <h4>Quem:</h4>
+            <ul>
+                {personagens}
+            </ul>
+            <h4>Como:</h4>
+            <ul>
+                {armas}
+            </ul>
+            <h4>Onde:</h4>
+            <ul>
+               {locais}
+            </ul>
+        </div>    
+    }
     renderListRadio(label, tipo, index) {
         return <li key={label}>
             <input type="radio" name={`${tipo}Radio`} value={index}></input>
@@ -127,12 +129,20 @@ class GameRender extends React.Component {
         return <div className="palpite" key='palpite'><button onClick={onClick} disabled={isDisabled}>Palpitar</button></div>;
     }
 
-    /*aqui eu tenho que fazer o sever, colar do tictac infinito tuto pois a tela é individual para cada jogador poder ter uma ação*/
     renderMostrarCarta(){
-        let acusarFormulario = this.renderFormulario()
+        let onClick = () =>  {
+            
+            this.props.moves.mostrarCarta("Faca")
+        }
+        return <button onClick={onClick} className="btnMostrarCarta">Mostrar</button>
+    }
+    
+    /*aqui eu tenho que fazer o sever, colar do tictac infinito tuto pois a tela é individual para cada jogador poder ter uma ação*/
+    renderMostrarCarta2(){
+        let hand = this.renderHandMostrarCarta()
         let isDisabled = false
         let onClick = () =>  {
-            document.getElementById('modalAcusacao').style.display='none';
+            document.getElementById('modalMostrarCarta').style.display='none';
             
             var choices = [];
 
@@ -155,27 +165,42 @@ class GameRender extends React.Component {
                 }
             }
             console.log(choices)
-            this.props.moves.acusar(choices);
+            this.props.moves.mostrarCarta(choices);
 
         }
-        let openModal = () => document.getElementById('modalAcusacao').style.display='block'
-        let closeModal =  () => document.getElementById('modalAcusacao').style.display='none'
-        return <div key='acusar'>
+        let openModal = () => document.getElementById('modalMostrarCarta').style.display='block'
+        let closeModal =  () => document.getElementById('modalMostrarCarta').style.display='none'
+        return <div className="mostrarCarta" key='mostrarCarta'>
             
-            <button onClick={openModal} className="btnAcusar">Acusar</button>
+            <button onClick={openModal} className="btnMostrarCarta">Mostrar</button>
             
             <div id="modalMostrarCarta" className="modalMostrarCarta">
-                <div className="modalAcusarBox">
+                <div className="modalMostrarCartaBox">
                     <div className="">
                         <span onClick={closeModal} className="modalAcusarClose">&times;</span>
-                        {acusarFormulario}
+                        {hand}
                         <button onClick={onClick} disabled={isDisabled}>OK</button>
                     </div>
                 </div>
             </div>
             </div>;
     }
+    renderHandMostrarCarta(){
+        const {cartas} = this.props.G;
+        const playerHandPersonagem =  cartas.personagem.map(c => this.renderCardHand(c, 'personagem'));
+        const playerHandArma =  cartas.arma.map(c => this.renderCardHand(c, 'arma'));
+        const playerHandLocal =  cartas.local.map(c => this.renderCardHand(c, 'local'));
 
+        return <div className="hand">
+            <h3>Mão</h3>
+            <h4>Quem:</h4>
+            {playerHandPersonagem}
+            <h4>Como:</h4>
+            {playerHandArma}
+            <h4>Onde:</h4>
+            {playerHandLocal}
+        </div>
+    }
     renderBoard() { //create board
         const state = this.props.G;
         const ctx = this.props.ctx;

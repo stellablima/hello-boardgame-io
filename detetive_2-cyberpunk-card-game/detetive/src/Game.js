@@ -28,7 +28,7 @@ export const Detetive = ({
 
     stages: {
       mostrarCarta: {
-        moves: mostrarCarta,
+        moves: {mostrarCarta},
       },
     },
   }, 
