@@ -92,6 +92,8 @@ function palpitar(currentState, ctx, segredo){
     game over
     win
     popup
+
+    criar botão mostrar carta
     */
 
     currentState.palpite = segredo

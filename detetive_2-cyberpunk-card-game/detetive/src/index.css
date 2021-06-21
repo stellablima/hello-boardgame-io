@@ -120,3 +120,20 @@ code {
   cursor: pointer;
 }
 
+.homeDiv{
+  width: 100%;
+  display: inline-table;
+}
+
+
+.palpite{
+  width: 100px;
+  background-color: blue;
+  float: left;
+}
+
+.acusar{
+  width: 100px;
+  background-color: blueviolet;
+  float: left;
+}

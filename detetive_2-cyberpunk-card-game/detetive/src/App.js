@@ -2,32 +2,39 @@ import { Client } from 'boardgame.io/react';
 import {Detetive} from './Game';
 import GameRender from './GameRender';
 import { Local } from 'boardgame.io/multiplayer';
+import React, { Component } from "react";
 
-const DetetiveClient = Client({
-  game: Detetive,
-  board: GameRender,
-  multiplayer: Local(),
-  //debug: false,
-  numPlayers: 2,
+class App extends Component {
+  state = {
+    numPlayers: 3,
+  };
 
-  //this.client.start();
-  //this.rootElement = rootElement;
-  //this.createBoard(); //isso ta no renderGame?
-  //this.attachListeners();
-  //this.client.subscribe(state => this.update(state)); //callbacks for every state change
-  
-  /*
-  tentar colocar dinamica de mais de um jogador, telas individuais ou algo assim
-  https://github.com/boardgameio/boardgame.io/blob/main/docs/documentation/turn-order.md
-  */
-});
+  render() {
 
+    const { numPlayers } = this.state;
+    const DetetiveClient = Client({
+      board: GameRender,
+      game: Detetive,
+      multiplayer: Local(),
+      numPlayers,
+      //debug: false,
+    });
 
-const App = () => (
-  <div>
-    <DetetiveClient playerID="0" />
-    <DetetiveClient playerID="1" />
-  </div>
-);
+    return (
+    <div>
+      <div className="homeDiv">
+        <DetetiveClient playerID="0"/>
+      </div>
+      <div className="homeDiv">
+        <DetetiveClient playerID="1"/>
+      </div>
+      <div className="homeDiv">
+        <DetetiveClient playerID="2"/>
+      </div>
+    </div>
+    );
+  }
+}
+
 
 export default App;

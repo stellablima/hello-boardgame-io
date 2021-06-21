@@ -73,7 +73,7 @@ class GameRender extends React.Component {
         }// default na funçaõ// this.props.moves.acusar(mockSegredo());
         let openModal = () => document.getElementById('modalAcusacao').style.display='block'
         let closeModal =  () => document.getElementById('modalAcusacao').style.display='none'
-        return <div key='acusar'>
+        return <div className='acusar' key='acusar'>
             
             <button onClick={openModal} className="btnAcusar">Acusar</button>
             
@@ -124,7 +124,7 @@ class GameRender extends React.Component {
             this.props.moves.palpitar(['0','0','0']);
             //renderMostrarCarta()
         }
-        return <div key='palpite'><button onClick={onClick} disabled={isDisabled}>Palpitar</button></div>;
+        return <div className="palpite" key='palpite'><button onClick={onClick} disabled={isDisabled}>Palpitar</button></div>;
     }
 
     /*aqui eu tenho que fazer o sever, colar do tictac infinito tuto pois a tela é individual para cada jogador poder ter uma ação*/
