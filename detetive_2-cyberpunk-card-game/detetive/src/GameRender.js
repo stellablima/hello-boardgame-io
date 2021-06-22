@@ -22,9 +22,8 @@ class GameRender extends React.Component {
         let acusarFormulario = this.renderAcusarFormulario()
         //const ctx = this.props.ctx;
         //const state = this.props.G;
-        //let cpuCost = getAttackProp(card, index, 'cpu_cost');
-        //let damage = getAttackProp(card, index, 'damage');
-        let isDisabled = false//(card.usedAttacks && card.usedAttacks.includes(index)) || !card.booted;
+        let acusarEnabled = (this.props.ctx.currentPlayer == this.props.playerID) ? false : true
+        let isDisabled = false
         let onClick = () => {
             document.getElementById('modalAcusacao'+this.props.playerID).style.display = 'none';
 
@@ -57,7 +56,7 @@ class GameRender extends React.Component {
         let closeModal = () => document.getElementById('modalAcusacao'+this.props.playerID).style.display = 'none'
         return <div className='acusar' key='acusar'>
 
-            <button onClick={openModal} className="btnAcusar">Acusar</button>
+            <button onClick={openModal} className="btnAcusar" disabled={acusarEnabled}>Acusar</button>
         
             <div id={`modalAcusacao${this.props.playerID}`} className="modalAcusar">
                 <div className="modalAcusarBox">
@@ -124,6 +123,7 @@ class GameRender extends React.Component {
 
         let palpitarFormulario = this.renderAcusarFormulario()
         let isDisabled = false
+        let palpitarEnabled = (this.props.ctx.currentPlayer == this.props.playerID) ? false : true
         let openModal = () => document.getElementById('modalPalpitar'+this.props.playerID).style.display = 'block'
         let closeModal = () => document.getElementById('modalPalpitar'+this.props.playerID).style.display = 'none'
         let onClick = () => {
@@ -152,12 +152,10 @@ class GameRender extends React.Component {
             }
             console.log(choices)
             this.props.moves.palpitar(choices);
-
-            //this.props.moves.palpitar(['0', '0', '0']);
         }
-        //
+
         return <div className="palpite" key='palpite'>
-            <button onClick={openModal} className="btnPalpitar" disabled={isDisabled}>Palpitar</button>
+            <button onClick={openModal} className="btnPalpitar" disabled={palpitarEnabled}>Palpitar</button>
 
             <div id={`modalPalpitar${this.props.playerID}`} className="modalPalpitar">
                 <div className="modalPalpitarBox">
@@ -168,17 +166,7 @@ class GameRender extends React.Component {
                     </div>
                 </div>
             </div>
-        </div>;
-    /*
-        let onClick = () => {
-
-
-        }*/
-
-            
-
-   
-    
+        </div>;   
     }
 
 
@@ -956,11 +944,11 @@ class GameRender extends React.Component {
 
     }
     renderCardHand(c, tipo) {
-        const { currentPlayer } = this.props.ctx;
-        const currentPlayerId = "player_" + currentPlayer;
-        var mao = null
+        const activePlayer  = this.props.playerID;
+        const activePlayerId = "player_" + activePlayer;
+        let mao = null
 
-        if (c.jogador && c.jogador === currentPlayerId)
+        if (c.jogador && c.jogador === activePlayerId)
             mao = c.label;
 
         if (!mao)
