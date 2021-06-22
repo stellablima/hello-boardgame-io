@@ -108,7 +108,7 @@ function palpitar(currentState, ctx, segredo){
 
 }
 
-function mostrarCarta(currentState, ctx,carta){
+function mostrarCarta(currentState, ctx, carta){
 
 }
 //arrumar acusar futuramente celulas ativas se necessario
