@@ -872,9 +872,28 @@ function getActivePlayer(currentState, ctx){
     }
 }
 
+
+//ao ser desclassificado o tabuleiro nao reseta, evocar a função que é feito ao final de cada movimento caso desclassificado
+//futuramente essa func deve retornar um array que representa a posição no prototipo do card, o card talvez nao tenha que ser uma variavel declarada e sim um prototipo a ser consultado
 function isComodo(idCelula){
     if(idCelula === '148')
         return 'Cozinha'
+    if(idCelula === '128' || idCelula === '177' || idCelula === '128' || idCelula === '135')
+        return 'Hall'
+    if(idCelula === '114')
+        return 'Sala de Jantar'
+    if(idCelula === '295' || idCelula === '366')
+        return 'Sala de Festas'
+    if(idCelula === '234' || idCelula === '310')
+        return 'Sala de Estar'
+    if(idCelula === '401' || idCelula === '356')
+        return 'Biblioteca'
+    if(idCelula === '522')
+        return 'Escritório'
+    if(idCelula === '494' || idCelula === '444' || idCelula === '443')
+        return 'Sala de Musica'
+    if(idCelula === '461')
+        return 'Sala de Jogos'
     else
         return null
 }

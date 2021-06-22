@@ -141,7 +141,8 @@ function endStageAndIfPlayerIsLastActivePlayerEndTurnToo(G, ctx) {
 function acusar(currentState, ctx, segredo){
     if(arraysEqual(segredo, currentState.segredo)){
         currentState.ganhador = getPlayerId(ctx);
-        console.log('mensagem ganhador')
+        console.log('mensagem ganhador: ' + ctx.currentPlayer)
+        ctx.events.endGame();
     }
     else {
         currentState.players[getPlayerId(ctx)].gameover = true //verificar a atual necessidade pois agora foi implementado uma lista de players ativos no currentstate/G manipulada pelo codigo onde todos os jogadores estao lá

@@ -7,18 +7,11 @@ export const Detetive = ({
   maxPlayers: 6,
   setup: setup, // instancia as variaveis principais, jogador, carta, etc
   turn: {
-    
     onBegin: turnOnBegin,  //onBegin: (G, ctx) => G //onEnd: (G, ctx) => G, // endIf: (G, ctx) => true, //onMove: (G, ctx) => G,// activePlayers: { ... },
-    onEnd: (G, ctx) => {//função calcular o proximo
-
+    onEnd: (G, ctx) => {
+      G.palpite = null
       G.playOrderPos = (G.playOrderPos + 1) % G.playOrder.length;
     },
-/*
-    endIf: (G, ctx) => {
-      //so sobrou um jogador, ele ganhougetActivePlayer(currentState)
-      if (ctx.activePlayers === 1) return ctx.activePlayers[0];
-    },*/
-
     order: {
 
       first: (G, ctx) => {

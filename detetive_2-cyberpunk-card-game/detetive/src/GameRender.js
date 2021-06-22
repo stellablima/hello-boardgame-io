@@ -22,7 +22,7 @@ class GameRender extends React.Component {
         let acusarFormulario = this.renderAcusarFormulario()
         //const ctx = this.props.ctx;
         //const state = this.props.G;
-        let acusarEnabled = (this.props.ctx.currentPlayer === this.props.playerID) ? false : true
+        let acusarEnabled = (this.props.ctx.currentPlayer === this.props.playerID && !this.props.G.palpite) ? false : true
         let isDisabled = false
         let onClick = () => {
             document.getElementById('modalAcusacao'+this.props.playerID).style.display = 'none';
@@ -124,7 +124,7 @@ class GameRender extends React.Component {
         let palpitarFormulario = this.renderAcusarFormulario()
         let isDisabled = false
         let playerInComodo = isComodo(this.props.G.players["player_"+this.props.ctx.currentPlayer].posicao.toString()) ? true : false
-        let palpitarEnabled = (this.props.ctx.currentPlayer === this.props.playerID && playerInComodo) ? false : true
+        let palpitarEnabled = (this.props.ctx.currentPlayer === this.props.playerID && playerInComodo && !this.props.G.palpite) ? false : true
         let openModal = () => document.getElementById('modalPalpitar'+this.props.playerID).style.display = 'block'
         let closeModal = () => document.getElementById('modalPalpitar'+this.props.playerID).style.display = 'none'
         let onClick = () => {
