@@ -129,14 +129,29 @@ class GameRender extends React.Component {
         return <div className="palpite" key='palpite'><button onClick={onClick} disabled={isDisabled}>Palpitar</button></div>;
     }
 
+
+
+
     renderMostrarCarta(){
-        let onClick = () =>  {
-            
+        let mostrarCarta = (this.props.ctx.activePlayers && this.props.ctx.activePlayers[this.props.playerID] === 'mostrarCarta') ? false : true;
+        let onClick = () =>  {            
             this.props.moves.mostrarCarta("Faca")
         }
-        return <button onClick={onClick} className="btnMostrarCarta">Mostrar</button>
+        
+        return <button onClick={onClick} className="btnMostrarCarta" disabled={mostrarCarta}>Mostrar</button>
     }
     
+
+
+
+
+
+
+
+
+
+
+
     /*aqui eu tenho que fazer o sever, colar do tictac infinito tuto pois a tela é individual para cada jogador poder ter uma ação*/
     renderMostrarCarta2(){
         let hand = this.renderHandMostrarCarta()
@@ -932,13 +947,8 @@ class GameRender extends React.Component {
     }
 
     attachListeners(currentState, ctx, el) {
-
         const id = el.target.id.slice(2);
         this.props.moves.mover(id);
-        //this.setState({estado[id]:'a'});
-        //state.moves.mover(id); //trigger the moves
-        //console.log(JSON.stringify(this, null, 4));
-        //console.log(util.inspect(this, false, null, true))
     }
     renderList(label) {
         return <li key={label}>
