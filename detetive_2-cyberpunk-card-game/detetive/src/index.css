@@ -70,7 +70,7 @@ code {
 }
 
 /* The Modal (background) */
-.modalAcusar, .modalMostrarCarta {
+.modalAcusar, .modalMostrarCarta, .modalPalpitar {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
@@ -85,7 +85,7 @@ code {
 
 
 /* Modal Content/Box */
-.modalAcusarBox, .modalMostrarCartaBox {
+.modalAcusarBox, .modalMostrarCartaBox, .modalPalpitarBox {
   background-color: #fefefe;
   margin: 5% auto; /* 15% from the top and centered */
   padding: 20px;

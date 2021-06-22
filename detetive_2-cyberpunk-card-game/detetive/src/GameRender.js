@@ -26,7 +26,7 @@ class GameRender extends React.Component {
         //let damage = getAttackProp(card, index, 'damage');
         let isDisabled = false//(card.usedAttacks && card.usedAttacks.includes(index)) || !card.booted;
         let onClick = () => {
-            document.getElementById('modalAcusacao').style.display = 'none';
+            document.getElementById('modalAcusacao'+this.props.playerID).style.display = 'none';
 
             var choices = [];
 
@@ -52,13 +52,14 @@ class GameRender extends React.Component {
             this.props.moves.acusar(choices);
 
         }// default na funçaõ// this.props.moves.acusar(mockSegredo());
-        let openModal = () => document.getElementById('modalAcusacao').style.display = 'block'
-        let closeModal = () => document.getElementById('modalAcusacao').style.display = 'none'
+        //{`modalAcusacao${this.props.playerID}`}
+        let openModal = () => document.getElementById('modalAcusacao'+this.props.playerID).style.display = 'block'
+        let closeModal = () => document.getElementById('modalAcusacao'+this.props.playerID).style.display = 'none'
         return <div className='acusar' key='acusar'>
 
             <button onClick={openModal} className="btnAcusar">Acusar</button>
-
-            <div id="modalAcusacao" className="modalAcusar">
+        
+            <div id={`modalAcusacao${this.props.playerID}`} className="modalAcusar">
                 <div className="modalAcusarBox">
                     <div className="">
                         <span onClick={closeModal} className="modalClose">&times;</span>
@@ -121,12 +122,63 @@ class GameRender extends React.Component {
     }
     renderPalpite() {
 
+        let palpitarFormulario = this.renderAcusarFormulario()
         let isDisabled = false
+        let openModal = () => document.getElementById('modalPalpitar'+this.props.playerID).style.display = 'block'
+        let closeModal = () => document.getElementById('modalPalpitar'+this.props.playerID).style.display = 'none'
         let onClick = () => {
-            this.props.moves.palpitar(['0', '0', '0']);
-            //renderMostrarCarta()
+
+            document.getElementById('modalPalpitar'+this.props.playerID).style.display = 'none';
+
+            var choices = [];
+
+            var elsPersonagem = document.getElementsByName('personagemRadio');
+            for (let i = 0; i < elsPersonagem.length; i++) {
+                if (elsPersonagem[i].checked) {
+                    choices.push(elsPersonagem[i].value);
+                }
+            }
+            var elsArma = document.getElementsByName('armaRadio');
+            for (let i = 0; i < elsArma.length; i++) {
+                if (elsArma[i].checked) {
+                    choices.push(elsArma[i].value);
+                }
+            }
+            var elsLocal = document.getElementsByName('localRadio');
+            for (let i = 0; i < elsLocal.length; i++) {
+                if (elsLocal[i].checked) {
+                    choices.push(elsLocal[i].value);
+                }
+            }
+            console.log(choices)
+            this.props.moves.palpitar(choices);
+
+            //this.props.moves.palpitar(['0', '0', '0']);
         }
-        return <div className="palpite" key='palpite'><button onClick={onClick} disabled={isDisabled}>Palpitar</button></div>;
+        //
+        return <div className="palpite" key='palpite'>
+            <button onClick={openModal} className="btnPalpitar" disabled={isDisabled}>Palpitar</button>
+
+            <div id={`modalPalpitar${this.props.playerID}`} className="modalPalpitar">
+                <div className="modalPalpitarBox">
+                    <div className="">
+                        <span onClick={closeModal} className="modalClose">&times;</span>
+                        {palpitarFormulario}
+                        <button onClick={onClick} disabled={isDisabled}>OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>;
+    /*
+        let onClick = () => {
+
+
+        }*/
+
+            
+
+   
+    
     }
 
 
@@ -170,15 +222,15 @@ class GameRender extends React.Component {
     }
     renderListRadioHand(c, tipo){
 
-//arrumar so cartas que jogador tem na mão e alvo da acusação
-
         const { palpite } = this.props.G;
+        const { cartas } = this.props.G;
         const activePlayer  = this.props.playerID;
         const activePlayerId = "player_" + activePlayer;
-        console.log(palpite) //fazer função buscar no prototipo ou nos cards ctx a correspondencia da posição da acusação para comparar
-        var mao = null
 
-        if (c.jogador && c.jogador === activePlayerId)
+        let palpiteLabel = palpite ? [cartas.personagem[palpite[0]].label, cartas.arma[palpite[1]].label, cartas.local[palpite[2]].label] : null
+        
+        let mao = null
+        if (c.jogador && c.jogador === activePlayerId && palpiteLabel && palpiteLabel.includes(c.label))
             mao = c.label;
 
         if (!mao)
