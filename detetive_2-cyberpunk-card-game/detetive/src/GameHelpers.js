@@ -872,6 +872,12 @@ function getActivePlayer(currentState, ctx){
     }
 }
 
+function isComodo(idCelula){
+    if(idCelula === '148')
+        return 'Cozinha'
+    else
+        return null
+}
 //currentState.players[getPlayerId(ctx)].gameover = true
 /* setActivePlayers(['0', '3']);
 implementar função get active players, depois deletePlayer etc
@@ -889,4 +895,4 @@ implementar stage quando a visao do joga estiver ok
 */
 
 
-export { calculaCelulasHabitadas, createBoard, getPlayerId, sortCartas, sortPlayers, arraysEqual, removeActivePlayer, getActivePlayer}
+export { calculaCelulasHabitadas, createBoard, getPlayerId, sortCartas, sortPlayers, arraysEqual, removeActivePlayer, getActivePlayer, isComodo}

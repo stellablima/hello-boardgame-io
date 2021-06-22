@@ -1,5 +1,5 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
-import {calculaCelulasHabitadas, createBoard, getPlayerId, sortCartas, arraysEqual} from './GameHelpers'
+import {calculaCelulasHabitadas, createBoard, getPlayerId, sortCartas, arraysEqual, isComodo} from './GameHelpers'
 
 function setup(ctx) {    
 
@@ -79,41 +79,66 @@ function mover(currentState, ctx, idCelula) {       //g == state
         currentState.celula[celula] = currentState.celula[celula].slice(0, -7);
     });
 
-    ctx.events.endTurn()
+    //verificar consição de acusação provavelmente nao precisa estar dentro de comodo nenhum
+    //se nao tiver pisado em nenhuma porta
+    if(!isComodo(idCelula)) 
+        ctx.events.endTurn()
     
 }
 //sngm ganha ou perde no palpite e sim os outros jogadores so mostram a carta que tem
 function palpitar(currentState, ctx, segredo){
-//ctx.events.setActivePlayers({ others: 'palpite', moveLimit: 1 })
+
+/*
+habilitar botão palpite
+identificar comodo automaticamente
+seta varivavel palpite conforme comodo que eu estou
+
+logica de acusação ok gameover quando acerta ou erra
+logica de palpite tbm deve setar variavel palpite
+
+if(arraysEqual(segredo, currentState.segredo)){
+    currentState.ganhador = getPlayerId(ctx);
+    console.log('mensagem ganhador')
+}
+else {
+    currentState.players[getPlayerId(ctx)].gameover = true //verificar a atual necessidade pois agora foi implementado uma lista de players ativos no currentstate/G manipulada pelo codigo onde todos os jogadores estao lá
+    const index = currentState.playOrder.indexOf(ctx.currentPlayer);
+    currentState.playOrder.splice(index, 1);
+    //estou me auto eliminando porque dei palpite errado, como o proximo da pilha vai assumir minha posição tem que decrementar referencia https://codesandbox.io/s/boardgameio-elimination-demo-2rezv?file=/src/Game.js:1125-1508
+    //o botão do palpite so é clicavel quando o cara ta na partida
+    if (index === currentState.playOrderPos) {
+        currentState.playOrderPos--;
+    }
+    console.log('mensagem desclassificado')
+    ctx.events.endTurn()
+}
+*/
+
     //personagem//arma//local
-    /*
-    players ativos em sentido horario deverao mostrar cartas que tenham no segredo na tela do jogador da partida
-
-    game over
-    win
-    popup
-
-    criar botão mostrar carta
-    */
-
     currentState.palpite = segredo
     ctx.events.setActivePlayers({ others: 'mostrarCarta', moveLimit: 1 });
     //ctx.events.setStage('mostrarCarta');
-    ///ctx.events.endStage();
+    //ctx.events.endStage();
     //ctx.events.endTurn()
     /*
     todos mostram cartas e por ultimo endPhase(*)
     */
-    
-
 }
 
 function mostrarCarta(currentState, ctx, carta){
-
+    endStageAndIfPlayerIsLastActivePlayerEndTurnToo(currentState, ctx)
 }
-//arrumar acusar futuramente celulas ativas se necessario
+
+function endStageAndIfPlayerIsLastActivePlayerEndTurnToo(G, ctx) {
+    ctx.events.endStage();
+    if (!ctx.activePlayers || (Object.keys(ctx.activePlayers).length === 1 && ctx.playerID in ctx.activePlayers)) {
+      ctx.events.endTurn();
+    }
+  }
+  
+//const submit = (G, ctx) => endStageAndIfPlayerIsLastActivePlayerEndTurnToo(G, ctx);
+
 function acusar(currentState, ctx, segredo){
-//abrir poupup com opções
     if(arraysEqual(segredo, currentState.segredo)){
         currentState.ganhador = getPlayerId(ctx);
         console.log('mensagem ganhador')
@@ -130,7 +155,6 @@ function acusar(currentState, ctx, segredo){
         console.log('mensagem desclassificado')
         ctx.events.endTurn()
     }
-
 }
 
 function turnOnBegin(currentState, ctx){
