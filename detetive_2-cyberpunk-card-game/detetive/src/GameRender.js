@@ -50,8 +50,8 @@ class GameRender extends React.Component {
             console.log(choices)
             this.props.moves.acusar(choices);
 
-        }// default na funçaõ// this.props.moves.acusar(mockSegredo());
-        //{`modalAcusacao${this.props.playerID}`}
+        }
+        
         let openModal = () => document.getElementById('modalAcusacao'+this.props.playerID).style.display = 'block'
         let closeModal = () => document.getElementById('modalAcusacao'+this.props.playerID).style.display = 'none'
         return <div className='acusar' key='acusar'>

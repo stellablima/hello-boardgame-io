@@ -52,7 +52,7 @@ function setup(ctx) {
         },
         dado: null,
         cartas: cartas[0],
-        segredo: cartas[1],//mockSegredo(),
+        segredo: cartas[1],
         ganhador: null,
         playOrder: ctx.playOrder,//ctx.playOrder, //1,3,5 fazer teste como receber idspickados
         playOrderPos: 0,
@@ -177,9 +177,4 @@ function mockState(){
     return [0,1,2]
 }
   
-function mockSegredo(){
-    return [0,0,0]
-}
-
-
-export { setup, palpitar, mostrarCarta, acusar, mover, turnOnBegin, mockState, mockSegredo };
+export { setup, palpitar, mostrarCarta, acusar, mover, turnOnBegin, mockState};

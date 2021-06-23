@@ -1,40 +1,48 @@
 import { Client } from 'boardgame.io/react';
 import {Detetive} from './Game';
 import GameRender from './GameRender';
-import { Local } from 'boardgame.io/multiplayer';
-import React, { Component } from "react";
+import React from "react";
+import { SocketIO } from 'boardgame.io/multiplayer'
 
-class App extends Component {
-  state = {
-    numPlayers: 3,
-  };
 
+
+
+class App extends React.Component {
+  state = { playerID: null };
   render() {
-
-    const { numPlayers } = this.state;
     const DetetiveClient = Client({
-      board: GameRender,
       game: Detetive,
-      multiplayer: Local(),
-      numPlayers,
-      //debug: false,
+      board: GameRender,
+      debug: false,
+      numPlayers: 3,
+      matchID: 'matchID',
+      multiplayer: SocketIO({ server: "localhost:8000" })
     });
 
+  
+    if (this.state.playerID === null) {
+      return (
+        <div>
+          <p>Play as</p>
+          <button onClick={() => this.setState({ playerID: "0" })}>
+            Player 0
+          </button>
+          <button onClick={() => this.setState({ playerID: "1" })}>
+            Player 1
+          </button>
+          <button onClick={() => this.setState({ playerID: "2" })}>
+            Player 2
+          </button>
+        </div>
+      );
+    }
     return (
-    <div>
-      <div className="homeDiv">
-        <DetetiveClient playerID="0"/>
+      <div>
+        <DetetiveClient playerID={this.state.playerID} />
       </div>
-      <div className="homeDiv">
-        <DetetiveClient playerID="1"/>
-      </div>
-      <div className="homeDiv">
-        <DetetiveClient playerID="2"/>
-      </div>
-    </div>
     );
   }
 }
 
-
 export default App;
+
